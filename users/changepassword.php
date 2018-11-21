@@ -9,18 +9,15 @@ $method = $_SERVER['REQUEST_METHOD'];
 if($method =='POST'){
 	$headers = apache_request_headers();
    foreach ($headers as $header => $value) {
-    // echo "$header: $value <br />\n";
     if($header == "token"){
     	$token = $value;
     }
 }
-	// $token = get('token');
-	// $t['token'] = $token;
 	$email= check_token('users',$token,$dbh);
-	$out = implode("&",array_map(function($a) {return implode("~",$a);},$email));
+	// implode("&",array_map(function($a) {return implode("~",$a);},$email));
+	$out = array_shift(array_shift($email));
 	$old_password = get('oldpassword');
 	$old_data['password'] = encode($token,$old_password);
-	// print_r($old_data['password']);
 	$check = check_pwd('users',$token,$old_data['password'],$dbh);
 	if(!$check){
        	$res['code'] = '201';
@@ -39,7 +36,6 @@ if($method =='POST'){
 						$password = encode($token,$new_password);
 						$wh = "token='".$token."'";
 						$data['password'] = $password; 
-						// print_r($data['password']);
 						try{
 							update('users',$wh,$data,"",$dbh);
 							$res['id'] = $id;

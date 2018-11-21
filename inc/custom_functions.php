@@ -38,9 +38,7 @@ function check_pwd($table, $where1,$where2, $con){
 	global $dbh;
 	    $sets = array();
 	    $query = "select count(*) as counts from `{$table}` where token='{$where1}' AND password='{$where2}'";
-	    // echo $query;
 	    $count = array_shift(sql($query));
-	     // print_r( $count);die();
 	    if ($count['counts'] == 0) {
 	        return false;
 	    } else {
@@ -51,13 +49,18 @@ function check_email($table,$where1,$dbh){
 	global $dbh;
 	    $sets = array();
 	    $query = "select count(*) as counts from `{$table}` where email='{$where1}'";
-	    // echo $query;
 	    $count = array_shift(sql($query));
-	     // print_r( $count);die();
 	    if ($count['counts'] == 0) {
 	        return false;
 	    } else {
 	        return true;
 	    }   
+}
+function get_id($table, $where, $con){
+	global $dbh;
+	    $sets = array();
+	    $query = "select id from `{$table}` where $where";
+	     $result = sql($query,$con);
+		return $result;
 }
 ?>

@@ -9,7 +9,6 @@ $method = $_SERVER['REQUEST_METHOD'];
 if($method =='POST'){
 	$headers = apache_request_headers();
    foreach ($headers as $header => $value) {
-    // echo "$header: $value <br />\n";
     if($header == "token"){
     	$token = $value;
     }

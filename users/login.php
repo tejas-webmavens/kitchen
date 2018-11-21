@@ -10,7 +10,7 @@ if($method=='POST'){
 	$valid =  false;
 	$data['email'] = get('email');
 	$token = get_token('users',$data['email'],$dbh);
-	$out = implode("&",array_map(function($a) {return implode("~",$a);},$token));
+	$out = array_shift(array_shift($token));
 	$pwd = get('password');
 	$data['password'] = encode($out,$pwd);
 	// print_r($data['password']);
