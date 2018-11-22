@@ -4,6 +4,7 @@ ini_set('display_errors', 0);
 include_once('../inc/config.php');
 include_once('../inc/functions.php');
 include_once('../inc/custom_functions.php');
+include_once('../inc/res_msg.php');
 global $dbh;
 $method = $_SERVER['REQUEST_METHOD'];
 if($method =='POST'){
@@ -14,25 +15,23 @@ if($method =='POST'){
     }
 	}
 	$email = get('email');
-	$check = check_email('users',$email,$dbh);
+	$wh1 = "email='".$email."'";
+	$check = check_rec_count('users',$wh1,$dbh);
 	if(!$check){
 		$wh = "token='".$token."'";
 		$data['email'] = $email; 
 		try{
 						update('users',$wh,$data,"",$dbh);
 							$res['id'] = $token;
-							$res['code'] = '200';
-							$res['msg'] = 'Successfully changed email';
+							$res['msg'] = $global_messages['301'];
 						}
 						catch(Excption $e){
-								$res['code'] = '109';
-							$res['msg'] = 'email is not updated';
+							$res['msg'] = $global_messages['303'];
 						}
        	
 	}
 	else{
-		$res['code'] = '201';
-		$res['msg'] = 'email is already exists';
+		$res['msg'] = $global_messages['201'];
 	}
 	echo json_encode($res);
 }

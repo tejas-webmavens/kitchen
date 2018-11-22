@@ -4,6 +4,7 @@ ini_set('display_errors', 0);
 include_once('../inc/config.php');
 include_once('../inc/functions.php');
 include_once('../inc/custom_functions.php');
+include_once('../inc/res_msg.php');
 global $dbh;
 $method = $_SERVER['REQUEST_METHOD'];
 if($method=='POST'){
@@ -16,12 +17,11 @@ if($method=='POST'){
 	// print_r($data['password']);
 	if(isset($data['email']) && isset($data['password']) && $data['email']!='' && $data['password']!=''){
 		$valid = true;
-		$avail = check_login('users',$data['email'],$data['password'],$dbh);
-
+		$wh1 = "email='".$data['email']."' AND password='".$data['password']."' ";
+		$avail = check_rec_count('users',$wh1,$dbh);
 	}
 	if(!$avail){
-		$res['code'] = '104';
-		$res['msg'] = 'invalid username or password';
+		$res['msg'] = $global_messages['104'];
 	}
 	else{
 		
@@ -29,26 +29,21 @@ if($method=='POST'){
 				$st = check_status('users',$out,$dbh);
 				$status = array_shift(array_shift($st));
 				if($status == 'active'){
-				$res['code'] = '200';
-				$res['msg'] = 'Successfully Login';
+				$res['msg'] = $global_messages['200'];
 				$res['token'] = $out;
 				}
 				else if($status == "deactive"){
-					$res['code'] = '206';
-					$res['msg'] = 'User is deactive';
+					$res['msg'] = $global_messages['206'];
 				}
 				else if($status == "deleted"){
-					$res['code'] = '211';
-					$res['msg'] = 'User is deleted';
+					$res['msg'] = $global_messages['211'];
 				}
 				else if($status == "blocked"){
-					$res['code'] = '212';
-					$res['msg'] = 'User is blocked';
+					$res['msg'] = $global_messages['212'];
 				}
 			}
 			else{
-				$res['code'] = '210';
-				$res['msg'] = 'Username and password should not be empty';
+				$res['msg'] = $global_messages['210'];
 			}
 		}
 		

@@ -1,0 +1,29 @@
+<?php
+	$global_messages['104'] = 'invalid username or password';
+	$global_messages['200'] = 'Successfully Login';
+	$global_messages['206'] = 'User is deactive';
+	$global_messages['211'] = 'User is deleted';
+	$global_messages['212'] = 'User is blocked';
+	$global_messages['210'] = 'Username and password should not be empty';
+	$global_messages['105'] = 'User is already available';
+	$global_messages['300'] = 'Success';
+	$global_messages['301'] = 'Successfully changed email';
+	$global_messages['201'] = 'email is already exists';
+	$global_messages['302'] = 'Old password is wrong';
+	$global_messages['303'] = 'email is not updated';
+	$global_messages['202'] = 'Password should be between 8-12 characters and it should contain minimum one character and number';
+	$global_messages['304'] = 'Successfully changed password';
+	$global_messages['305'] = 'password is not updated';
+	$global_messages['306'] = 'please confirm password';
+	$global_messages['105'] = 'Token or User id is wrong';
+	$global_messages['307'] = "Success";
+	$global_messages['308'] = 'Failed';
+	$global_messages['309']= 'token is not valid';
+	$global_messages['310'] = 'Log succefully';
+	$global_messages['311'] = 'Data is not inserted';
+	$global_messages['312'] = 'user id or id is wrong';
+	$global_messages['313'] = 'Game stop successfully';
+	$global_messages['314'] = 'Game failed to stop';
+	$global_messages['315'] = 'Game start successfully';
+	$global_messages['316'] = 'Game failed to start';
+?>

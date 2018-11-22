@@ -4,31 +4,28 @@ ini_set('display_errors', 0);
 include_once('../inc/config.php');
 include_once('../inc/functions.php');
 include_once('../inc/custom_functions.php');
+include_once('../inc/res_msg.php');
 global $dbh;
 $method = $_SERVER['REQUEST_METHOD'];
 if($method =='POST'){
 	$headers = apache_request_headers();
    foreach ($headers as $header => $value) {
     	if($header == "token"){
-    	$token = $value;
+    		$token = $value;
     	}
 	}
 	$u_id= get('user_id');
-	$wh1 = "token='".$token."'";
-	$wh = "id='".$u_id."'";
-	$check = check_info('users',$wh,$wh1,$dbh);
+	$wh1 = "token='".$token."' AND id='".$u_id."' ";
+	$check = check_rec_count('users',$wh1,$dbh);
 	if(!$check){
-		$res['code'] = '105';
-		$res['msg'] = 'Token or User id is wrong';
+		$res['msg'] = $global_messages['105'];
 	}
 	else{
 			$id = get('id');
-			$wh1 = "id='".$id."'";
-			$wh = "user_id='".$u_id."'";
-			$avail = check_info('users_log',$wh,$wh1,$dbh);
-			if(!$avail){
-				$res['code'] = '109';
-				$res['msg'] = 'user id or id is wrong';
+			$wh1 = "id='".$id."' AND id='".$u_id."' ";
+			$avail = check_rec_count('users',$wh1,$dbh);
+			if($avail){
+				$res['msg'] = $global_messages['312'];
 			}
 			else{
 				$data = array();
@@ -38,11 +35,9 @@ if($method =='POST'){
 				$wh3 = "id='".$data['id']."'";
 				try{				
 					update('users_log',$wh3,$data,"",$dbh);
-					$res['code'] = '200';
-					$res['msg'] = 'Game stop successfully';
+					$res['msg'] = $global_messages['313'];
 				}catch(exception $e){
-					$res['code'] = '109';
-					$res['msg'] = 'Game failed to stop';
+					$res['msg'] = $global_messages['314'];
 				}
 			}
 			

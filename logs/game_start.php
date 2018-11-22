@@ -4,6 +4,7 @@ ini_set('display_errors', 0);
 include_once('../inc/config.php');
 include_once('../inc/functions.php');
 include_once('../inc/custom_functions.php');
+include_once('../inc/res_msg.php');
 global $dbh;
 $method = $_SERVER['REQUEST_METHOD'];
 if($method =='POST'){
@@ -14,12 +15,10 @@ if($method =='POST'){
     	}
 	}
 	$u_id= get('user_id');
-	$wh1 = "token='".$token."'";
-	$wh = "id='".$u_id."'";
-	$check = check_info('users',$wh,$wh1,$dbh);
+	$wh1 = "token='".$token."' AND id='".$u_id."' ";
+	$check = check_rec_count('users',$wh1,$dbh);
 	if(!$check){
-		$res['code'] = '105';
-		$res['msg'] = 'Token or User id is wrong';
+		$res['msg'] = $global_messages['105'];
 	}
 	else{
 			$data = array();
@@ -29,11 +28,9 @@ if($method =='POST'){
 			try{
 				$id = insert('users_log',$data,$dbh);
 				$res['id'] = $id;
-				$res['code'] = '200';
-				$res['msg'] = 'Game start successfully';
+				$res['msg'] = $global_messages['315'];
 			}catch(exception $e){
-				$res['code'] = '109';
-				$res['msg'] = 'Game failed to start';
+				$res['msg'] = $global_messages['316'];
 			}
 		}
 	echo json_encode($res);	

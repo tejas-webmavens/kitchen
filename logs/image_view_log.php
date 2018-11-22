@@ -4,6 +4,7 @@ ini_set('display_errors', 0);
 include_once('../inc/config.php');
 include_once('../inc/functions.php');
 include_once('../inc/custom_functions.php');
+include_once('../inc/res_msg.php');
 global $dbh;
 $method = $_SERVER['REQUEST_METHOD'];
 if($method =='POST'){
@@ -20,21 +21,18 @@ if($method =='POST'){
 	$wh = "token='".$token."'";
 	$u_id = get_id('users',$wh,$dbh);
 	if(empty($u_id)){
-		$res['code'] = '110';
-		$res['msg'] = 'token is not valid';
+		$res['msg'] = $global_messages['309'];
 	}
 	else{
 		$data['user_id'] = array_shift(array_shift($u_id));
 		$data['users_log_id'] = get('users_log_id');
 	try{
 	 insert('image_view_log',$data,$dbh);
-	$res['code'] = '200';
-	$res['msg'] = 'Log succefully';
+	$res['msg'] = $global_messages['310'];
 	$res['token'] = $token;
 	}
 	catch(exception $e){
-		$res['code'] = '104';
-		$res['msg'] = 'Data is not inserted';
+		$res['msg'] = $global_messages['311'];
 	}
 	}
 	

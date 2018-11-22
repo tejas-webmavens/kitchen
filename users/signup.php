@@ -15,29 +15,25 @@ if($method=='POST'){
 	$password = decode($data['token'],$pwd);
 	if(isset($data['email']) && isset($password) && $data['email']!='' && $password!=''){
 		$valid = true;
-		$avail = check_data('users', $data['email'],$dbh);
+		$wh1 = "email='".$data['email']."'";
+		$avail = check_rec_count('users',$wh1,$dbh);
 	}
 	
 
-	if(!$avail){
-		$res['code'] = '105';
-		$res['msg'] = 'User is already available';
+	if($avail){
+		$res['msg'] = $global_messages['105'];
 	}
 	else{
 		if($valid){
 
-			$data['password'] = encode($data['token'],$pwd);
-			// print_r($data['password']);
-			
+			$data['password'] = encode($data['token'],$pwd);			
 			$id = insert('users',$data,$dbh);
 			$res['id'] = $id;
-			$res['code'] = '200';
-			$res['msg'] = 'Success';
+			$res['msg'] = $global_messages['300'];
 			$res['token'] = $data['token'];
 		}
 		else{
-			$res['code'] = '104';
-			$res['msg'] = 'invalid username or password';
+			$res['msg'] = $global_messages['301'];
 		}	
 	}
 	

@@ -4,6 +4,7 @@ ini_set('display_errors', 0);
 include_once('../inc/config.php');
 include_once('../inc/functions.php');
 include_once('../inc/custom_functions.php');
+include_once('../inc/res_msg.php');
 global $dbh;
 $method = $_SERVER['REQUEST_METHOD'];
 if($method =='POST'){
@@ -14,20 +15,18 @@ if($method =='POST'){
     }
 }
 	$email= check_token('users',$token,$dbh);
-	// implode("&",array_map(function($a) {return implode("~",$a);},$email));
 	$out = array_shift(array_shift($email));
 	$old_password = get('oldpassword');
 	$old_data['password'] = encode($token,$old_password);
-	$check = check_pwd('users',$token,$old_data['password'],$dbh);
+	$wh1 = "token='".$token."' AND password='".$old_data['password']."' ";
+	$check = check_rec_count('users',$wh1,$dbh);
 	if(!$check){
-       	$res['code'] = '201';
-		$res['msg'] = 'Old password is wrong';
+		$res['msg'] = $global_messages['302'];
 	}
 	else{
 		 	$new_password = get('password');
 			if(!preg_match('/^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%]{8,12}$/', $new_password)) {
-				$res['code'] = '202';
-				$res['msg'] = 'Password should be between 8-12 characters and it should contain minimum one character and number';
+				$res['msg'] = $global_messages['202'];
 			}
 			else{
 					$retype = get('retype');
@@ -39,18 +38,14 @@ if($method =='POST'){
 						try{
 							update('users',$wh,$data,"",$dbh);
 							$res['id'] = $id;
-							$res['code'] = '200';
-							$res['msg'] = 'Successfully changed password';
+							$res['msg'] = $global_messages['304'];
 						}
 						catch(Excption $e){
-								$res['code'] = '109';
-							$res['msg'] = 'password is not updated';
+							$res['msg'] = $global_messages['305'];
 						}
 					}
 					else{
-						
-						$res['code'] = '109';
-						$res['msg'] = 'please confirm password';
+							$res['msg'] = $global_messages['306'];
 					}
 					
 				}	
