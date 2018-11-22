@@ -11,7 +11,7 @@ if($method =='POST'){
 	$headers = apache_request_headers();
    foreach ($headers as $header => $value) {
     	if($header == "token"){
-    	$token = $value;
+    		$token = $value;
     	}
 	}
 	$u_id= get('user_id');
@@ -33,7 +33,7 @@ if($method =='POST'){
 				$res['msg'] = $global_messages['316'];
 			}
 		}
-	echo json_encode($res);	
+		echo json_encode($res);	
 		
 	}
 	
