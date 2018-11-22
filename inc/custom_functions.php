@@ -63,4 +63,22 @@ function get_id($table, $where, $con){
 	     $result = sql($query,$con);
 		return $result;
 }
+function check_info($table,$where1,$where2,$dbh){
+	global $dbh;
+	    $sets = array();
+	    $query = "select count(*) as counts from `{$table}` where $where1 AND $where2";
+	    $count = array_shift(sql($query));
+	    if ($count['counts'] == 0) {
+	        return false;
+	    } else {
+	        return true;
+	    }   
+}
+function check_status($table,$where,$con){
+	global $dbh;
+	    $sets = array();
+	    $query = "select status from `{$table}` where token = '{$where}'";
+	     $result = sql($query,$con);
+		return $result;
+}
 ?>
