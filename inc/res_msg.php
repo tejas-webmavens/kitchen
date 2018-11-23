@@ -26,4 +26,6 @@
 	$global_messages['314'] = 'Game failed to stop';
 	$global_messages['315'] = 'Game start successfully';
 	$global_messages['316'] = 'Game failed to start';
+	$global_messages['400'] = 'Thank you for rate us';
+	$global_messages['401'] = 'Rate is not submitted';
 ?>

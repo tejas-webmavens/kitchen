@@ -42,7 +42,16 @@ if($method =='POST'){
 			}
 			
 		}
-	echo json_encode($res);	
+				$r1 = array();
+				$r1['called_api'] = 'game_stop';
+				$req = array('id'=>$data['id'],'user_id'=>$data['user_id'],'end_time'=>$data['end_time']);
+				$api_log = json_encode($req);
+				$r1['request_params'] = $api_log;
+				$req = array('msg'=>$res['msg']);
+				$api_log_msg = json_encode($req);
+				$r1['response_params']=$api_log_msg;
+				insert('api_log',$r1,$dbh);
+				echo json_encode($res);
 		
 	}	
 	

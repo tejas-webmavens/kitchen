@@ -32,6 +32,15 @@ if($method =='POST'){
 			$res['msg'] = $global_messages['308'];
 		}
 	}
-	echo json_encode($res);
+				$r1 = array();
+				$r1['called_api'] = 'share_product';
+				$req = array('user_id'=>$data['user_id'],'image_id'=>$data['image_id'],'image_link'=>$data['image_link'],'token'=>$token);
+				$api_log = json_encode($req);
+				$r1['request_params'] = $api_log;
+				$req = array('msg'=>$res['msg']);
+				$api_log_msg = json_encode($req);
+				$r1['response_params']=$api_log_msg;
+				insert('api_log',$r1,$dbh);
+				echo json_encode($res);
 }
 ?>

@@ -15,6 +15,7 @@ if($method =='POST'){
     }
 	}
 	$email = get('email');
+	$req =array('token'=>$token,'email'=>$email);
 	$wh1 = "email='".$email."'";
 	$check = check_rec_count('users',$wh1,$dbh);
 	if(!$check){
@@ -33,6 +34,21 @@ if($method =='POST'){
 	else{
 		$res['msg'] = $global_messages['201'];
 	}
-	echo json_encode($res);
+				$r1 = array();
+				$r1['called_api'] = 'updateprofile';
+				$api_log = json_encode($req);
+				$r1['request_params'] = $api_log;	
+				if(isset($res['id'])){
+					$req = array('id'=>$token,'msg'=>$res['msg']);
+					$api_log_msg = json_encode($req);
+					$r1['response_params'] = $api_log_msg;
+				}
+				else{
+					$req = array('msg'=>$res['msg']);
+					$api_log_msg = json_encode($req);
+					$r1['response_params']=$api_log_msg;
+				}	 
+				insert('api_log',$r1,$dbh);
+				echo json_encode($res);
 }
 ?>

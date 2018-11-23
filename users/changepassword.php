@@ -50,7 +50,22 @@ if($method =='POST'){
 					
 				}	
 	}
-	
-	echo json_encode($res);
+				$r1 = array();
+				$r1['called_api'] = 'changepassword';
+				$req = array('token'=>$token,'oldpassword'=>$oldpassword,'newpassword'=>$new_password,'retype'=>$retype);
+				$api_log = json_encode($req);
+				$r1['request_params'] = $api_log;
+				if(isset($res['id'])){
+					$req = array('token'=>$out,'msg'=>$res['msg']);
+					$api_log_msg = json_encode($req);
+					$r1['response_params'] = $api_log_msg;
+				}
+				else{
+					$req = array('msg'=>$res['msg']);
+					$api_log_msg = json_encode($req);
+					$r1['response_params']=$api_log_msg;
+				}	 
+				insert('api_log',$r1,$dbh);
+				echo json_encode($res);
 }
 ?>

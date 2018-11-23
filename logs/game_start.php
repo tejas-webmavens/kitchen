@@ -33,7 +33,23 @@ if($method =='POST'){
 				$res['msg'] = $global_messages['316'];
 			}
 		}
-		echo json_encode($res);	
+				$r1 = array();
+				$r1['called_api'] = 'game_start';
+				$req = array('token'=>$token,'user_id'=>$data['user_id'],'start_time'=>$data['start_time']);
+				$api_log = json_encode($req);
+				$r1['request_params'] = $api_log;				
+				if(isset($res['id'])){
+					$req = array('id'=>$id,'msg'=>$res['msg']);
+					$api_log_msg = json_encode($req);
+					$r1['response_params'] = $api_log_msg;
+				}
+				else{
+					$req = array('msg'=>$res['msg']);
+					$api_log_msg = json_encode($req);
+					$r1['response_params']=$api_log_msg;
+				}	 
+				insert('api_log',$r1,$dbh);
+				echo json_encode($res);
 		
 	}
 	

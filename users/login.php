@@ -14,7 +14,7 @@ if($method=='POST'){
 	$out = array_shift(array_shift($token));
 	$pwd = get('password');
 	$data['password'] = encode($out,$pwd);
-	// print_r($data['password']);
+	$req = array('email'=>$data['email'],'password'=>$data['password']);
 	if(isset($data['email']) && isset($data['password']) && $data['email']!='' && $data['password']!=''){
 		$valid = true;
 		$wh1 = "email='".$data['email']."' AND password='".$data['password']."' ";
@@ -29,6 +29,10 @@ if($method=='POST'){
 				$st = check_status('users',$out,$dbh);
 				$status = array_shift(array_shift($st));
 				if($status == 'active'){
+				$wh1 = "token='".$out."'";
+				$data = array();
+				$data['type'] = get('type');
+				update('users',$wh1,$data,"",$dbh);
 				$res['msg'] = $global_messages['200'];
 				$res['token'] = $out;
 				}
@@ -41,13 +45,28 @@ if($method=='POST'){
 				else if($status == "blocked"){
 					$res['msg'] = $global_messages['212'];
 				}
+				
 			}
 			else{
 				$res['msg'] = $global_messages['210'];
 			}
 		}
-		
-	echo json_encode($res);
+				$r1 = array();
+				$r1['called_api'] = 'login';				
+				$api_log = json_encode($req);
+				$r1['request_params'] = $api_log;
+				if(isset($res['token'])){
+					$req = array('token'=>$out,'msg'=>$res['msg']);
+					$api_log_msg = json_encode($req);
+					$r1['response_params'] = $api_log_msg;
+				}
+				else{
+					$req = array('msg'=>$res['msg']);
+					$api_log_msg = json_encode($req);
+					$r1['response_params']=$api_log_msg;
+				}	 
+				insert('api_log',$r1,$dbh);
+				echo json_encode($res);
 }	
 
 ?>

@@ -4,6 +4,7 @@ ini_set('display_errors', 0);
 include_once('../inc/config.php');
 include_once('../inc/functions.php');
 include_once('../inc/custom_functions.php');
+include_once('../inc/res_msg.php');
 global $dbh;
 $method = $_SERVER['REQUEST_METHOD'];
 if($method=='POST'){
@@ -13,6 +14,7 @@ if($method=='POST'){
 	$data['email'] = get('email');
 	$pwd = get('password');
 	$password = decode($data['token'],$pwd);
+	$req = array('email'=>$data['email'],'password'=>$password);
 	if(isset($data['email']) && isset($password) && $data['email']!='' && $password!=''){
 		$valid = true;
 		$wh1 = "email='".$data['email']."'";
@@ -36,7 +38,21 @@ if($method=='POST'){
 			$res['msg'] = $global_messages['301'];
 		}	
 	}
-	
+	$r1 = array();
+	$r1['called_api'] = 'signup';
+	$api_log = json_encode($req);
+	$r1['request_params'] = $api_log;
+	if(isset($res['token'])){
+		$req = array('token'=>$data['token'],'id'=>$id,'msg'=>$res['msg']);
+		$api_log_msg = json_encode($req);
+		$r1['response_params'] = $api_log_msg;
+	}
+	else{
+		$req = array('msg'=>$res['msg']);
+		$api_log_msg = json_encode($req);
+		$r1['response_params']=$api_log_msg;
+		}	 
+	insert('api_log',$r1,$dbh);
 	echo json_encode($res);
 }
 

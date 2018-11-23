@@ -136,7 +136,6 @@ function insert($table, $data, $con = "") {
         $sets[] = "$k=\"" . mysqli_real_escape_string($con, $v) . "\"";
     }
     $q = "INSERT INTO " . $table . " SET " . implode(", ", $sets);
-
     $data = "";
     mysqli_query_custom($q, $con);
     return mysqli_insert_id($con);
