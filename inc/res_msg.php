@@ -15,7 +15,7 @@
 	$global_messages['304'] = 'Successfully changed password';
 	$global_messages['305'] = 'password is not updated';
 	$global_messages['306'] = 'please confirm password';
-	$global_messages['105'] = 'Token or User id is wrong';
+	$global_messages['106'] = 'Token or User id is wrong';
 	$global_messages['307'] = "Success";
 	$global_messages['308'] = 'Failed';
 	$global_messages['309']= 'token is not valid';

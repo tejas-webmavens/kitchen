@@ -18,7 +18,7 @@ if($method =='POST'){
 	$wh1 = "token='".$token."' AND id='".$u_id."' ";
 	$check = check_rec_count('users',$wh1,$dbh);
 	if(!$check){
-		$res['msg'] = $global_messages['105'];
+		$res['msg'] = $global_messages['106'];
 	}
 	else{
 		$data = array();
