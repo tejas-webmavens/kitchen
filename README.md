@@ -1,1 +1,1 @@
-corephp-boilerplate
+zend_boilerplate

@@ -1,0 +1,94 @@
+<?php $action = Zend_Controller_Front::getInstance()->getRequest()->getActionName()?>
+<p align="right"><a href="/Settings/index" >View all</a></p>
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="white-box">
+				<h3 class="box-title m-b-0">Settings</h3>
+					<form data-toggle="frm_settings" method="post">
+						<div class="form-group">
+							<label for="setting_label" class="control-label">Setting_label :</label>
+							<?php
+								if($action=="view"){
+									echo $this->settings['setting_label'];
+								}else{
+								?>
+							<input type="text" class="form-control" name="setting_label" id="setting_label" value="<?php echo $this->settings['setting_label']; ?>" />
+							<?php } ?>
+						</div>
+						<div class="form-group">
+							<label for="setting_slug" class="control-label">Setting_slug :</label>
+							<?php
+								if($action=="view"){
+									echo $this->settings['setting_slug'];
+								}else{
+								?>
+							<input type="text" class="form-control" name="setting_slug" id="setting_slug" value="<?php echo $this->settings['setting_slug']; ?>" />
+							<?php } ?>
+						</div>
+						<div class="form-group">
+							<label for="setting_value" class="control-label">Setting_value :</label>
+							<?php
+								if($action=="view"){
+									echo $this->settings['setting_value'];
+								}else{
+								?>
+							<input type="text" class="form-control" name="setting_value" id="setting_value" value="<?php echo $this->settings['setting_value']; ?>" />
+							<?php } ?>
+						</div>
+						<div class="form-group">
+							<label for="setting_help_text" class="control-label">Setting_help_text :</label>
+							<?php
+								if($action=="view"){
+									echo $this->settings['setting_help_text'];
+								}else{
+								?>
+							<input type="text" class="form-control" name="setting_help_text" id="setting_help_text" value="<?php echo $this->settings['setting_help_text']; ?>" />
+							<?php } ?>
+						</div>
+						<div class="form-group">
+							<label for="sort_order" class="control-label">Sort_order :</label>
+							<?php
+								if($action=="view"){
+									echo $this->settings['sort_order'];
+								}else{
+								?>
+							<input type="text" class="form-control" name="sort_order" id="sort_order" value="<?php echo $this->settings['sort_order']; ?>" />
+							<?php } ?>
+						</div>
+						<div class="form-group">
+							<label for="encrypted" class="control-label">Encrypted :</label>
+							<?php
+								if($action=="view"){
+									echo $this->settings['encrypted'];
+								}else{
+								?>
+								<div class="radio">
+									<input type="radio" name="encrypted"  id="encrypted" value="1" <?php if($this->settings['encrypted']==1){ echo 'checked'; }?> />									<label for="encrypted"> Yes </label>
+									<input type="radio" name="encrypted"  id="encrypted" value="0" <?php if($this->settings['encrypted']==0){ echo 'checked'; }?> />
+									<label for="encrypted"> No </label>
+								</div>
+							<?php } ?>
+						</div>
+		<?php if($action!="view"){?>
+		<div class="form-group">
+			<input class="btn btn-primary" type="submit" name="submit" id="submit" value="<?php echo ucfirst($action)?>" >
+		</div>
+		<?php }?>
+					</form>
+			</div>
+		</div>
+	</div>
+<script>
+	varsetting_label = new LiveValidation( 'setting_label', {onlyOnSubmit: true } );
+	setting_label.add( Validate.Presence )
+	varsetting_slug = new LiveValidation( 'setting_slug', {onlyOnSubmit: true } );
+	setting_slug.add( Validate.Presence )
+	varsetting_value = new LiveValidation( 'setting_value', {onlyOnSubmit: true } );
+	setting_value.add( Validate.Presence )
+	varsetting_help_text = new LiveValidation( 'setting_help_text', {onlyOnSubmit: true } );
+	setting_help_text.add( Validate.Presence )
+	varsort_order = new LiveValidation( 'sort_order', {onlyOnSubmit: true } );
+	sort_order.add( Validate.Presence )
+	varencrypted = new LiveValidation( 'encrypted', {onlyOnSubmit: true } );
+	encrypted.add( Validate.Presence )
+</script>

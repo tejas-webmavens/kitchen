@@ -1,0 +1,70 @@
+https://snag.gy/uP3gxQ.jpg
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico">
+        <title>Xcoins</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+        <meta content="" name="description"/>
+        <meta content="" name="author"/>
+        <link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <!-- Custom CSS -->
+        <link href="/assets/css/style.css" rel="stylesheet">
+        <!-- jQuery -->
+        <script src="/assets/js/jquery.min.js"></script>
+        <!-- Bootstrap Core JavaScript -->
+        <script src="/assets/js/bootstrap.min.js"></script>
+        <!-- Menu Plugin JavaScript -->
+        <script src="/assets/required/sidebar-nav/dist/sidebar-nav.min.js"></script>
+        <!--slimscroll JavaScript -->
+        <script src="/assets/js/jquery.slimscroll.js"></script>
+        <script src="/assets/js/custom.js"></script>
+        <script src="/assets/js/functions.js"></script>
+        <?php $action = Zend_Controller_Front::getInstance()->getRequest()->getActionName();
+        if ($action == 'orderreport') {
+            ?>
+            <!-- Plugin JavaScript -->
+            <!-- Date picker plugins css -->
+            <link href="/assets/required/bootstrap-datepicker/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />
+            <script src="/assets/required/moment/moment.js"></script>        
+            <script src="/assets/required/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+<?php } ?>
+    </head>
+    <!-- END HEAD -->
+    <!-- BEGIN BODY -->
+    <body class="<?= $current_controller . $current_action == "userlogin" ? "login" : "page-header-fixed page-full-width" ?>">
+        <?php        
+        include 'header.php';
+        ?>
+        <!-- BEGIN CONTAINER -->
+        <!--<div id="page_container" class="page-container" <? $this->noheader?"style='margin-top:0px!important'":"" ?>>-->
+        <!-- BEGIN CONTENT -->
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <!-- BEGIN PAGE CONTENT-->
+                <!--<div class='row'><div class='col-md-12'><this->SubMenu?></div></div>-->
+                <!--				<div class="row">
+                                                        <div class="col-md-12">-->
+<?= Core_BP_Session::getMessage(); ?>
+                <? echo $this->layout()->content; ?>
+                <!--					</div>
+                                                </div>-->
+                <!-- END PAGE CONTENT-->
+            </div>
+        </div>
+        <!-- END CONTENT -->
+
+        <!--</div>-->
+        <!-- END CONTAINER -->
+
+        <!-- BEGIN FOOTER -->
+        <!-- Footer Copyright and Scripts -->    
+
+<?php include_once 'footer.php'; ?>
+        <!-- END FOOTER -->
+    </body>
+    <!-- END BODY -->

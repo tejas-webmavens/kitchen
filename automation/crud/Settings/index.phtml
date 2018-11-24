@@ -1,0 +1,45 @@
+<?php 
+	$title = 'Settings';
+	$btn_data = array();
+	$btn_data['text'] = 'Add Settings';
+	$btn_data['link'] = '/settings/add';
+	$actions = array();
+	$actions['view']['text'] = '';
+	$actions['view']['link'] = '/settings/view/id/{id}?action=view';
+	$actions['edit']['text'] = '';
+	$actions['edit']['link'] = '/settings/edit/id/{id}';
+	$actions['delete']['text'] = '';
+	$actions['delete']['link'] = '/settings/remove/id/{id}';
+	$hide_column = array('id');
+	echo Core_BP_Grid::get_record_per_page($this->limit);
+?>
+<div class="row">
+	<div class="col-md-6">
+		<h3 class="box-title table-search-input-title">Settings<a href='/settings/add' class='btn btn-default m-l-15'>Add</a></h3>
+	</div>	<div class="col-md-6">
+		<form method="get">
+			<div class="form-group table-search-input">
+				<input type="text" class="form-control" placeholder="Search Here" name="search" id="search" value="<?=@$_GET['search']?>">
+			</div>
+		</form>
+	</div>
+</div>
+<div class="table-responsive">
+	<table class="table table-bordered">
+		<thead>
+			<th>Id</th>
+			<th>Setting_label</th>
+			<th>Setting_slug</th>
+			<th>Setting_value</th>
+			<th>Setting_help_text</th>
+			<th>Sort_order</th>
+			<th>Encrypted</th>
+		</thead>
+		<tbody>
+			<?php
+				 echo Core_BP_Grid::generate($this->query, $actions, $btn_data, $hide_column,$this->limit,$this->page);
+			?>
+		</tbody>
+	</table>
+</div>
+<?=Core_BP_Grid::get_pagination($this->limit, $this->page, $this->query); ?>
