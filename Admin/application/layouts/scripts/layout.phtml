@@ -1,0 +1,56 @@
+
+    <!-- END HEAD -->
+    <!-- BEGIN BODY -->
+    <body>
+        
+        <?php        
+        include 'header.php';
+        ?>
+       
+        <!-- BEGIN CONTAINER -->
+        <div>
+            <?php $action = Zend_Controller_Front::getInstance()->getRequest()->getActionName();
+        if ($action == 'login' || $action == 'register') {
+            // $this->_helper->layout->disableLayout();
+            // $this->_helper->viewRenderer->setNoRender(true);
+         }
+         else{
+             include "menu.php";
+         }?>
+     
+        <!-- BEGIN CONTENT -->
+        <!-- <div id="page-wrapper"> -->
+            <!-- <div class="container-fluid"> -->
+
+                <!-- BEGIN PAGE CONTENT-->
+                <!--<div class='row'><div class='col-md-12'><this->SubMenu?></div></div>-->
+                <!--				<div class="row">
+                                                        <div class="col-md-12">-->
+ <!-- Navigation, Sidebar and Menues -->
+  
+<?php echo $this->layout()->content; ?>
+</div>
+                 
+                <!--					</div>
+                                                </div>-->
+                <!-- END PAGE CONTENT-->
+            <!-- </div> -->
+        <!-- </div> -->
+        <!-- END CONTENT -->
+
+        <!--</div>-->
+        <!-- END CONTAINER -->
+
+        <!-- BEGIN FOOTER -->
+        <!-- Footer Copyright and Scripts -->    
+
+<?php  if ($action == 'login' || $action == 'register') {
+            
+         }
+         else{
+             include "footer.php";
+         }?> 
+    
+        <!-- END FOOTER -->
+    </body>
+    <!-- END BODY -->       

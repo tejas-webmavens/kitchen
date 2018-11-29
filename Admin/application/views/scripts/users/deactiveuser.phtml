@@ -1,0 +1,168 @@
+<body>
+    <div>
+        
+        <!-- Page Content -->
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row bg-title">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <h4 class="page-title">Deactivated Users <span class="label label-warning"><?php echo count($this->deacive) ?></span></h4>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class="date-range-side pull-right">
+                            <div class="example">
+                                 <form id="date_btn">
+                                <div id="reportrange" class="form-control pull-right" role="button">
+								    <i class="fa fa-calendar"></i>&nbsp;
+								    <span></span><input type="hidden" id="start_date" name="start_date"/>
+                                    <input type="hidden" id="end_date" name="end_date"/> <i class="fa fa-caret-down"></i>
+								</div>
+                            </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+
+                <!-- .row -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="white-box">
+                        	<h3 class="box-title table-search-input-title">Deactivated Users list comes here</h3>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Email</th>
+                                            <th>Rounds played</th>
+                                            <th>Total time spent</th>
+                                            <th>No. of shares</th>
+                                            <th>Action</th>
+                                        </tr>
+                                         <form id="search_deactive" method="post">
+                                        <tr>
+                                        	<td><input type="text" class="form-control" placeholder="Id" name="id"></td>
+                                        	<td><input type="text" class="form-control" placeholder="Email" name="email"></td>
+                                        	<td><input type="text" class="form-control" placeholder="Rounds played" name="games_played"></td>
+                                        	<td><input type="text" class="form-control" placeholder="Total time spent" name="total_time_spent"></td>
+                                        	<td><input type="text" class="form-control" placeholder="No. of shares" name="total_shares"></td>
+                                        	<td>
+                                                <button  type="submit" style="display: none"> </button> 
+   
+                                            </td>
+                                        </tr>
+                                    </form>
+                                    </thead>
+                                    <tbody>
+                                         <?php foreach ($this->deactive as $key => $value) {
+                                            # code...
+                                        ?>
+                                    	<tr data-url="">
+                                    		<td><a href="userdetails"><?php echo $value['id'] ?></a></td>
+                                    		<td><?php echo $value['email'] ?></td>
+                                    		<td><?php echo $value['games_played'] ?></td>
+                                    		<td><?php echo gmdate("H:i:s",$value['total_time_spent']); ?></td>
+                                    		<td><?php echo $value['total_shares'] ?></td>
+                                        <?php } ?>
+                                    		<td>
+                                    			<div class="action-wrapp">
+	                                    			<a href="userdetails" class="btn btn-success btn-icon" title="View" data-toggle="tooltip"><i class="icon-action-redo"></i></a>
+	                                    			<a href="edituser" class="btn btn-warning btn-icon" title="Edit" data-toggle="tooltip"><i class="icon-ban"></i></a>
+	                                    			<a href="#" class="btn btn-primary btn-icon" title="Activate" data-toggle="tooltip"><i class="icon-user"></i></a>
+                                    			</div>
+                                    		</td>
+                                    	</tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                              <?php if($Count == '50'){ ?>
+                            <div class="text-center">
+                                <ul class="pagination pagination-split">
+                                    <li> <a href="#"><i class="fa fa-angle-left"></i></a> </li>
+                                     <?php echo $this->pagination ?> 
+                                    <!-- <li class="active"> <a href="#">1</a> </li>
+                                    <li> <a href="#">2</a> </li>
+                                    <li> <a href="#">3</a> </li>
+                                    <li> <a href="#">4</a> </li>
+                                    <li> <a href="#">5</a> </li> -->
+                                    <li> <a href="#"><i class="fa fa-angle-right"></i></a> </li>
+                                </ul>
+                            </div>
+                        <?php } ?>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.row -->
+
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- Footer Copyright and Scripts -->
+    <script src="http://localhost/kitchen/Admin/public/assets/required/moment/moment.js"></script>
+    <script src="http://localhost/kitchen/Admin/public/assets/required/timepicker/bootstrap-timepicker.min.js"></script>
+    <script src="http://localhost/kitchen/Admin/public/assets/required/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script type="text/javascript">
+		$(function() {
+
+		   var start = '<?= $this->start_date ?>';
+            var dateObj = new Date(start);
+            start = moment(dateObj);
+            var end = '<?= $this->end_date ?>';
+            var dateObj = new Date(end);
+            end = moment(dateObj);
+		    function cb(start, end) {
+		        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                 $('#reportrange #start_date').val(start.format('YYYY-MM-DD')); 
+                   $('#reportrange #end_date').val(end.format('YYYY-MM-DD'));
+		    }
+
+		    $('#reportrange').daterangepicker({
+		        startDate: start,
+		        endDate: end,
+		        ranges: {
+		           'Today': [moment(), moment()],
+		           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+		           'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+		           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		           'This Month': [moment().startOf('month'), moment().endOf('month')],
+		           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+		        }
+		    }, cb);
+
+		    cb(start, end);
+
+		});
+        $(document).on('click', '[data-range-key="Today"]', function(){
+            $('#date_btn').submit();
+        })
+        $(document).on('click', '[data-range-key="Last 7 Days"]', function(){
+            $('#date_btn').submit();
+        })
+        $(document).on('click', '[data-range-key="Last 30 Days"]', function(){
+            $('#date_btn').submit();
+        })
+        $(document).on('click', '[data-range-key="This Month"]', function(){
+            $('#date_btn').submit();
+        })
+        $(document).on('click', '[data-range-key="Last Month"]', function(){
+            $('#date_btn').submit();
+        })
+        $(document).on('click', '[data-range-key="Yesterday"]', function(){
+            $('#date_btn').submit();
+        })
+        $(document).on('click', '[data-range-key="Custom Range"]', function(){
+            cb(start, end);
+        })
+
+        $('.applyBtn').click(function(){
+            alert("in");
+                $('#date_btn').submit();
+        });
+	</script>
+</body>

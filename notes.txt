@@ -1,0 +1,2 @@
+ - on form submit JS loader at upload time.
+ - if error in csv then delete from batch tables

@@ -1,0 +1,182 @@
+<body>
+    <div>
+        <!-- Navigation, Sidebar and Menues -->
+
+        <!-- Page Content -->
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row bg-title">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <h4 class="page-title">Ratings <span class="label label-warning"><?php echo count($this->rating) ?></span></h4>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class="date-range-side pull-right">
+                            <div class="example">
+                                <form id="date_btn">
+                                     <!-- onclick="document.getElementById('date_btn').submit();" -->
+                                <!-- <button class="button" type="submit"> -->
+                                <div id="reportrange" class="form-control pull-right" role="button">
+                                    <!-- <a type="submit" role="button" > -->
+								    <i class="fa fa-calendar"></i>&nbsp;
+								    <span name="dates"></span>
+                                    <input type="hidden" id="start_date" name="start_date"/>
+                                    <input type="hidden" id="end_date" name="end_date"/>
+                                     <i class="fa fa-caret-down"></i>
+                                    <!-- </a> -->
+								</div>
+                            <!-- </button> -->
+                        </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+
+                <!-- .row -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="white-box">
+                        	<h3 class="box-title table-search-input-title">Users with ratings' list comes here</h3>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Email</th>
+                                            <th>Ratings</th>
+                                            <th class="comment">Comments</th>
+                                        </tr>
+                                        <!-- <tr>
+                                            <button type="button" onclick="document.getElementById('add_ratings').submit();">Add</button>
+                                        </tr> -->
+                                        <form id="search_ratings" method="post">
+                                        <tr>
+                                        	<td><input type="text" class="form-control" placeholder="Id" name="id"></td>
+                                        	<td><input type="text" class="form-control" placeholder="Email" name="email"></td>
+                                        	<td><input type="text" class="form-control" placeholder="Ratings" name="ratings"></td>
+                                        	<td><input type="text" class="form-control" placeholder="Comments" name="comments"></td>
+                                            <td>
+                                                <!-- <div type="hidden"> -->
+                                                     <button  type="submit" style="display: none"> </button> 
+                                                <!-- </div> -->
+                                              
+                                            </td>
+                                        </tr>
+
+                                    </form>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($this->rating as $key => $value) {
+                                            # code...
+                                        ?>
+                                    	<tr data-url="">
+                                    		<td><a href="userdetails"><?php echo $value['id'] ?></a></td>
+                                    		<td><?php echo $value['email'] ?></td>
+                                    		<td><?php echo $value['rate'] ?></td>
+                                    		<td>
+                                    			<?php echo $value['comment'] ?>
+                                    		</td>
+                                    	</tr>
+                                        <?php } ?>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        <?php if($Count == '50'){ ?>
+                            <div class="text-center">
+                                <ul class="pagination pagination-split">
+                                   
+                                    <li> <a href="#"><i class="fa fa-angle-left"></i></a> </li>
+                                    <li>
+                                     <?php echo $this->pagination ?> 
+                                        <!-- <a href="#">1</a> -->
+                                         </li>
+                                   <!--  <li> <a href="#">2</a> </li>
+                                    <li> <a href="#">3</a> </li>
+                                    <li> <a href="#">4</a> </li>
+                                    <li> <a href="#">5</a> </li> -->
+                                    <li> <a href="#"><i class="fa fa-angle-right"></i></a> </li>
+                                </ul>
+                            </div>
+                         <?php    } ?>
+                            
+                        </div>
+                    </div>
+                </div>
+                <!-- /.row -->
+
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- Footer Copyright and Scripts -->
+    <script src="http://localhost/kitchen/Admin/public/assets/required/moment/moment.js"></script>
+    <script src="http://localhost/kitchen/Admin/public/assets/required/timepicker/bootstrap-timepicker.min.js"></script>
+    <script src="http://localhost/kitchen/Admin/public/assets/required/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script type="text/javascript">
+		$(function() {
+
+            var start = '<?= $this->start_date ?>';
+            var dateObj = new Date(start);
+            start = moment(dateObj);
+            var end = '<?= $this->end_date ?>';
+            var dateObj = new Date(end);
+            end = moment(dateObj);
+
+		    function cb(start, end) {
+		        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                 $('#reportrange #start_date').val(start.format('YYYY-MM-DD')); 
+                   $('#reportrange #end_date').val(end.format('YYYY-MM-DD'));
+                
+		    }
+            
+
+		    $('#reportrange').daterangepicker({
+		        startDate: start,
+		        endDate: end,
+		        ranges: {
+		           'Today': [moment(), moment()],
+		           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+		           'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+		           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		           'This Month': [moment().startOf('month'), moment().endOf('month')],
+		           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]   
+		        }
+		    }, cb);
+
+		    cb(start, end);
+           
+
+		});
+         $(document).on('click', '[data-range-key="Today"]', function(){
+            $('#date_btn').submit();
+        })
+        $(document).on('click', '[data-range-key="Last 7 Days"]', function(){
+            $('#date_btn').submit();
+        })
+        $(document).on('click', '[data-range-key="Last 30 Days"]', function(){
+            $('#date_btn').submit();
+        })
+        $(document).on('click', '[data-range-key="This Month"]', function(){
+            $('#date_btn').submit();
+        })
+        $(document).on('click', '[data-range-key="Last Month"]', function(){
+            $('#date_btn').submit();
+        })
+        $(document).on('click', '[data-range-key="Yesterday"]', function(){
+            $('#date_btn').submit();
+        })
+        $(document).on('click', '[data-range-key="Custom Range"]', function(){
+            cb(start, end);
+        })
+
+        $('.applyBtn').click(function(){
+            alert("in");
+                $('#date_btn').submit();
+        });
+   
+	</script>
+</body>
