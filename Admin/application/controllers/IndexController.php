@@ -4,29 +4,36 @@ ini_set('display_errors',0);
 class IndexController extends Zend_Controller_Action
 {
 	public function init(){
-		$this->_redirector = $this->_helper->getHelper('Redirector'); 	
+			
+			$this->start_date = Core_BP_Session::getVal("start_date");
+			$this->end_date = Core_BP_Session::getVal("end_date");
+
+			if($this->start_date==''){
+				$start_date = date('Y-m-d');
+				$end_date = date('Y-m-d');
+			}
+			$this->db = Zend_Db_Table::getDefaultAdapter();
+			$this->perpage = 50;	 	
 	}
 	public function indexAction() {
 
-		$db = Zend_Db_Table::getDefaultAdapter();
-		$res = $db->query("SELECT * FROM users WHERE STR_TO_DATE(audit_created_date, '%Y-%m-%d') = CURDATE() ORDER BY audit_created_date DESC");
+		$res = $this->db->query("SELECT * FROM users WHERE STR_TO_DATE(audit_created_date, '%Y-%m-%d') = CURDATE() ORDER BY audit_created_date DESC");
 
 		if($row=$res->fetchAll()) {
 			$this->view->user =$row;
 		}
-		$res1 = $db->query("SELECT * FROM app_ratings WHERE STR_TO_DATE(audit_created_date, '%Y-%m-%d') = CURDATE() ORDER BY audit_created_date DESC");
+		$res1 = $this->db->query("SELECT * FROM app_ratings WHERE STR_TO_DATE(audit_created_date, '%Y-%m-%d') = CURDATE() ORDER BY audit_created_date DESC");
 
 		if($row1=$res1->fetchAll()) {
 			$this->view->rating =$row1;
 		}		
 	}
 	public function ratingsAction() {
-		$db = Zend_Db_Table::getDefaultAdapter();
 		
 		
 		$start_date = $this->getRequest()->getParam('start_date','');
 		$end_date = $this->getRequest()->getParam('end_date','');
-		// print_r($start_date);die();
+		
 		if($start_date==''){
 			$start_date = $this->start_date;
 			$end_date = $this->end_date;
@@ -70,7 +77,7 @@ class IndexController extends Zend_Controller_Action
 		
 			
 			
-			$res = $db->query($query);
+			$res = $this->db->query($query);
 			$Count_data =$res->fetchAll();
 			$Count = $Count_data['count'];
 
@@ -94,9 +101,8 @@ class IndexController extends Zend_Controller_Action
 				$data_query .= "AND STR_TO_DATE(audit_created_date, '%Y-%m-%d')>='".$start_date."' AND STR_TO_DATE(audit_created_date, '%Y-%m-%d')<='".$end_date."''".$limit."'";
 			}
 		
-			// print_r($data_query);die();
 			
-			$res = $db->query($data_query);
+			$res = $this->db->query($data_query);
 			$res_data =$res->fetchAll();
 			$data = $res_data;
 			$this->view->start_date = $start_date;
@@ -125,15 +131,10 @@ class IndexController extends Zend_Controller_Action
 		exit;
 	}
 	public function loginAction(){
-		// $this->_helper->layout()->disableLayout();  
-		//print_r($_POST);die();
-		$db = Zend_Db_Table::getDefaultAdapter();
-		// $_pass=$this->getRequest()->getParam('password');
 		$username=$_POST['username'];
         $_pass=$_POST['password'];
-      // echo "SELECT id,username FROM m_users WHERE username='$username' AND `password`='$_pass'"; die();
 		if($username!="" && $_pass!="") {
-			$res = $db->query("SELECT id,username FROM m_users WHERE username='$username' AND `password`='$_pass'");
+			$res = $this->db->query("SELECT id,username FROM m_users WHERE username='$username' AND `password`='$_pass'");
 
 			if($row=$res->fetch()) {
 

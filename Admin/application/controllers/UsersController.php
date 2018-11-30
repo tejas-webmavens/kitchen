@@ -1,24 +1,34 @@
 <?php
-
+error_reporting(E_ALL);
+ini_set('display_errors',0);
 class UsersController extends Zend_Controller_Action
 {
-        public function init() 
+    public function init() 
 	{
-                 // $db = Zend_Db_Table::getDefaultAdapter();
-                 // $db->query("SET @app_username='Cron'");	
-                  $this->_redirector = $this->_helper->getHelper('Redirector'); 	 
+	      $this->start_date = Core_BP_Session::getVal("start_date");
+		  $this->end_date = Core_BP_Session::getVal("end_date");
+		  $this->Count = Core_BP_Session::getVal("Count");
+
+			if($this->start_date==''){
+				$start_date = date('Y-m-d');
+				$end_date = date('Y-m-d');
+			}
+		  $this->db = Zend_Db_Table::getDefaultAdapter();
+		  $this->perpage = 50;	 
+		  
 	}
 	public function addnewAction() {
 		
 		
 	}
 	public function activeuserAction() {
-		$db = Zend_Db_Table::getDefaultAdapter();
 		
-		
+		$user_id = $_GET['id'];
+		$active_query = $this->db->query("UPDATE users SET status='active' WHERE id = '".$user_id."'");
 		$start_date = $this->getRequest()->getParam('start_date','');
 		$end_date = $this->getRequest()->getParam('end_date','');
-		// print_r($start_date);die();
+		$page = $this->getRequest()->getParam('page', 1);
+
 		if($start_date==''){
 			$start_date = $this->start_date;
 			$end_date = $this->end_date;
@@ -67,7 +77,7 @@ class UsersController extends Zend_Controller_Action
 		
 			
 			
-			$res = $db->query($query);
+			$res = $this->db->query($query);
 			$Count_data =$res->fetchAll();
 			$Count = $Count_data['count'];
 
@@ -94,25 +104,26 @@ class UsersController extends Zend_Controller_Action
 				$data_query .= "AND STR_TO_DATE(audit_created_date, '%Y-%m-%d')>='".$start_date."' AND STR_TO_DATE(audit_created_date, '%Y-%m-%d')<='".$end_date."''".$limit."'";
 			}
 		
-			// print_r($data_query);die();
 			
-			$res = $db->query($data_query);
+			$res = $this->db->query($data_query);
 			$res_data =$res->fetchAll();
 			$data = $res_data;
 			$this->view->start_date = $start_date;
 			$this->view->end_date = $end_date;
 			$this->view->Count = $Count;
+			Core_BP_Session::setVal("Count", $Count);
 			$this->view->active = $data;
 			$this->view->pagination = Core_BP_Components_Pagination::display($Count, $offset, $this->perpage, $page, 'http://localhost/kitchen/Admin/public/users/activeuser', $link_param);	
 		
 	}
 	public function deactiveuserAction(){
-		$db = Zend_Db_Table::getDefaultAdapter();
 		
-		
+		$user_id = $_GET['id'];
+		$deactive_query = $this->db->query("UPDATE users SET status='deactive' WHERE id = '".$user_id."'");
 		$start_date = $this->getRequest()->getParam('start_date','');
 		$end_date = $this->getRequest()->getParam('end_date','');
-		// print_r($start_date);die();
+		$page = $this->getRequest()->getParam('page', 1);
+		
 		if($start_date==''){
 			$start_date = $this->start_date;
 			$end_date = $this->end_date;
@@ -161,7 +172,7 @@ class UsersController extends Zend_Controller_Action
 		
 			
 			
-			$res = $db->query($query);
+			$res = $this->db->query($query);
 			$Count_data =$res->fetchAll();
 			$Count = $Count_data['count'];
 
@@ -188,9 +199,8 @@ class UsersController extends Zend_Controller_Action
 				$data_query .= "AND STR_TO_DATE(audit_created_date, '%Y-%m-%d')>='".$start_date."' AND STR_TO_DATE(audit_created_date, '%Y-%m-%d')<='".$end_date."''".$limit."'";
 			}
 		
-			// print_r($data_query);die();
 			
-			$res = $db->query($data_query);
+			$res = $this->db->query($data_query);
 			$res_data =$res->fetchAll();
 			$data = $res_data;
 			$this->view->start_date = $start_date;
@@ -201,11 +211,41 @@ class UsersController extends Zend_Controller_Action
 
 	}
 	public function edituserAction(){
-
+		$user_id = $_GET['id'];
+		$details_query = $this->db->query("select * from users where id = '".$user_id."' ");
+		$res_details = $details_query->fetchAll();
+		$details = array_shift($res_details);	
+		$this->view->useredit = $details;
+		$email = $_POST['email'];
+		$password = $_POST['password'];
+		$confirm = $_POST['confirm'];
+		if(isset($email) || isset($password)){
+			if($password == $confirm){
+			$data = $this->db->query("UPDATE users SET email= '".$email."',password='".$password."' where id = '".$user_id."'");
+			}
+		}
+		
 	}
 	public function userdetailsAction(){
+		$user_id = $_GET['id'];
+		$details_query = $this->db->query("select * from users where id = '".$user_id."' ");
+		$res_details = $details_query->fetchAll();
+		$details = array_shift($res_details);	
+		$this->view->userdetails = $details;
+		$date_query = $this->db->query("select DISTINCT STR_TO_DATE(start_time, '%Y-%m-%d') as start_time  from users_log where user_id = '".$user_id."' ");
+		$res_date = $date_query->fetchAll();
+		foreach ($res_date as $key => $value) {
+				$v1[] = $value;
+				$this->view->userdate=$v1;
+				$data_query = $this->db->query("select  * from users_log where user_id='".$user_id."' AND STR_TO_DATE(start_time, '%Y-%m-%d') =  '".implode(',',$value)."' ");
+				$res_data = $data_query->fetchAll();
+				$res[]= $res_data;
+				$this->view->userlogs=$res;
+				
+		}
+		
 
-	}
+	}	
 	public function gamedetailAction(){
 
 	}

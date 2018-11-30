@@ -1,15 +1,47 @@
-DEF:settings
-BEFORE INSERT{     
-   INSERT INTO settings_log(setting_id,setting_label,setting_slug,setting_value,setting_help_text,sort_order,encrypted,audit_created_by,audit_updated_by,audit_created_date,audit_updated_date,audit_ip)
-   VALUES(NEW.id,NEW.setting_label,NEW.setting_slug,NEW.setting_value,NEW.setting_help_text,NEW.sort_order,NEW.encrypted,NEW.audit_created_by,NEW.audit_updated_by,NEW.audit_created_date,NEW.audit_updated_date,NEW.audit_ip);        
+
+
+DEF:users_log
+BEFORE INSERT{
+   SET NEW.total_time_spend = (TIMESTAMPDIFF(SECOND,NEW.start_time,NEW.end_time));
+   SET NEW.email = (SELECT email FROM users  WHERE id=NEW.user_id);	
 }
-DEF:settings
-BEFORE UPDATE{     
-   INSERT INTO settings_log(setting_id,setting_label,setting_slug,setting_value,setting_help_text,sort_order,encrypted,audit_created_by,audit_updated_by,audit_created_date,audit_updated_date,audit_ip)
-   VALUES(NEW.id,NEW.setting_label,NEW.setting_slug,NEW.setting_value,NEW.setting_help_text,NEW.sort_order,NEW.encrypted,NEW.audit_created_by,NEW.audit_updated_by,NEW.audit_created_date,NEW.audit_updated_date,NEW.audit_ip);        
+AFTER INSERT{
+	SET @games_played = (SELECT COUNT(*) FROM users_log WHERE user_id=NEW.user_id);
+  	UPDATE users SET games_played = @games_played WHERE id=NEW.user_id;
+  	SET @total_time_spent = (SELECT sum(total_time_spend) FROM users_log  WHERE  user_id=NEW.user_id);
+  	UPDATE users SET total_time_spent = @total_time_spent WHERE id=NEW.user_id;
 }
-DEF:settings
-BEFORE DELETE{     
-   INSERT INTO settings_log(setting_id,setting_label,setting_slug,setting_value,setting_help_text,sort_order,encrypted,audit_created_by,audit_updated_by,audit_created_date,audit_updated_date,audit_ip)
-   VALUES(OLD.id,OLD.setting_label,OLD.setting_slug,OLD.setting_value,OLD.setting_help_text,OLD.sort_order,OLD.encrypted,OLD.audit_created_by,OLD.audit_updated_by,OLD.audit_created_date,OLD.audit_updated_date,OLD.audit_ip);        
+ 
+DEF:share_log
+BEFORE INSERT{
+	   SET NEW.email = (SELECT email FROM users  WHERE id=NEW.user_id);	
+
 }
+AFTER INSERT{
+	SET @total_shares = (SELECT COUNT(*) FROM share_log  WHERE user_id=NEW.user_id);
+  	UPDATE users SET total_shares = @total_shares WHERE id=NEW.user_id;
+  	SET @share_count = (SELECT COUNT(*) FROM share_log  WHERE user_id=NEW.user_id AND users_log_id=NEW.users_log_id);
+  	UPDATE users_log SET share_count = @share_count WHERE user_id=NEW.user_id AND id=NEW.users_log_id;
+
+}
+
+DEF:image_view_log
+AFTER INSERT{
+	SET @total_images_view_count = (SELECT COUNT(*) FROM image_view_log  WHERE user_id=NEW.user_id);
+  	UPDATE users SET total_images_view_count = @total_images_view_count WHERE id=NEW.user_id;
+  	SET @image_view_log = (SELECT COUNT(*) FROM image_view_log  WHERE user_id=NEW.user_id AND users_log_id=NEW.users_log_id);
+  	UPDATE users_log SET image_view_log = @image_view_log WHERE user_id=NEW.user_id AND id=NEW.users_log_id;
+
+}
+
+DEF:login_log
+BEFORE INSERT{
+	   SET NEW.email = (SELECT email FROM users  WHERE id=NEW.user_id AND token=NEW.token);	
+}
+AFTER INSERT{
+
+	UPDATE users SET retention_count = (SELECT COUNT(*) FROM login_log  WHERE user_id=users.id AND login_type='success');
+
+
+}
+

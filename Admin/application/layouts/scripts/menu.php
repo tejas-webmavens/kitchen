@@ -26,6 +26,7 @@
             <!-- /.navbar-header -->
             <!-- /.navbar-top-links -->
             <!-- /.navbar-static-side -->
+
         </nav>
         <!-- Left navbar-header -->
         <div class="navbar-default sidebar" role="navigation">
@@ -36,14 +37,14 @@
                     <li> <a href="http://localhost/kitchen/Admin/public/index/index"><i class="linea-icon linea-basic fa-fw" data-icon="c"></i> <span class="hide-menu"> Dashboard</a>
                     </li>
 
-                    <li> <a href="ratings"><i class="ti-star fa-fw"></i> <span class="hide-menu"> Ratings</a>
+                    <li> <a href="http://localhost/kitchen/Admin/public/index/Ratings"><i class="ti-star fa-fw"></i> <span class="hide-menu"> Ratings</a>
                     </li>
 
                 	<li class="active"> <a href="javascript:void(0);" class="waves-effect"><i class="ti-user fa-fw"></i> <span class="hide-menu">Users <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
                     	<li> <a href="http://localhost/kitchen/Admin/public/users/addnew">Add new user</a> </li>
-                        <li> <a href="http://localhost/kitchen/Admin/public/users/activeuser">Active <span class="label label-rouded label-info pull-right">13</span></a> </li>
-                        <li> <a href="http://localhost/kitchen/Admin/public/users/deactiveuser">Deactivated <span class="label label-warning label-info pull-right">1</span></a> </li>
+                        <li> <a href="http://localhost/kitchen/Admin/public/users/activeuser">Active <span class="label label-rouded label-info pull-right"><?php echo $this->Count ?></span></a> </li>
+                        <li> <a href="http://localhost/kitchen/Admin/public/users/deactiveuser">Deactivated <span class="label label-warning label-info pull-right"><?php echo count($this->deactive) ?></span></a> </li>
                     </ul>
                 </li>
 

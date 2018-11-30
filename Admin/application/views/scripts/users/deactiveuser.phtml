@@ -6,7 +6,7 @@
             <div class="container-fluid">
                 <div class="row bg-title">
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                        <h4 class="page-title">Deactivated Users <span class="label label-warning"><?php echo count($this->deacive) ?></span></h4>
+                        <h4 class="page-title">Deactivated Users <span class="label label-warning"><?php echo count($this->deactive) ?></span></h4>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                         <div class="date-range-side pull-right">
@@ -64,15 +64,15 @@
                                     		<td><?php echo $value['games_played'] ?></td>
                                     		<td><?php echo gmdate("H:i:s",$value['total_time_spent']); ?></td>
                                     		<td><?php echo $value['total_shares'] ?></td>
-                                        <?php } ?>
                                     		<td>
                                     			<div class="action-wrapp">
-	                                    			<a href="userdetails" class="btn btn-success btn-icon" title="View" data-toggle="tooltip"><i class="icon-action-redo"></i></a>
-	                                    			<a href="edituser" class="btn btn-warning btn-icon" title="Edit" data-toggle="tooltip"><i class="icon-ban"></i></a>
-	                                    			<a href="#" class="btn btn-primary btn-icon" title="Activate" data-toggle="tooltip"><i class="icon-user"></i></a>
+	                                    			<a href="userdetails?id=<?php echo $value['id'];?>" class="btn btn-success btn-icon" title="View" data-toggle="tooltip"><i class="icon-action-redo"></i></a>
+	                                    			<a href="edituser?id=<?php echo $value['id'];?>" class="btn btn-warning btn-icon" title="Edit" data-toggle="tooltip"><i class="icon-ban"></i></a>
+	                                    			<a href="activeuser?id=<?php echo $value['id'];?>" class="btn btn-primary btn-icon" title="Activate" data-toggle="tooltip"><i class="icon-user"></i></a>
                                     			</div>
                                     		</td>
                                     	</tr>
+                                        <?php } ?>
                                     </tbody>
                                 </table>
                             </div>

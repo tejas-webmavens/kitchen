@@ -7,13 +7,13 @@ date_default_timezone_set('America/Chicago');
 if($_SERVER['SERVER_NAME'] == "") {
 	$triggerin_db_host="localhost";
 	$triggerin_db_user="root";
-	$triggerin_db_pass="root";
-	$triggerin_db_name="orientation";
+	$triggerin_db_pass="123";
+	$triggerin_db_name="kitchenk";
 } else {
 	$triggerin_db_host="localhost";
 	$triggerin_db_user="root";
-	$triggerin_db_pass="root";
-	$triggerin_db_name="orientation";
+	$triggerin_db_pass="123";
+	$triggerin_db_name="kitchenk";
 }
 
 $user_app='user';
