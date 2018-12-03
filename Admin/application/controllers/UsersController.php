@@ -18,9 +18,31 @@ class UsersController extends Zend_Controller_Action
 		  
 	}
 	public function addnewAction() {
-		
-		
+		$email = $_POST['email'];
+		$password = $_POST['password'];
+		$confirm = $_POST['confirm'];
+		$this->view->msg="";
+		$data['email'] = $email;
+		if(isset($data['email']) && isset($password) && $data['email']!=='' && $password !=='' ){
+			$valid=true;
+			$wh1 = "email='".$data['email']."'";
+			$avail = Core_BP_Custom::check_rec_count('users',$wh1);
+		}
+		if($avail){
+			$this->view->msg="email is already exists";
+		}
+		else{
+			if($valid){
+				$token = uniqid();
+				$pswd = $password;
+				$data['password'] = Core_BP_Custom::encode1($token,$pswd);
+				$data['token'] = $token; 
+				$res = $this->db->insert("users",$data);
+				$this->view->msg="Successfully added";
+			}	
+		}
 	}
+
 	public function activeuserAction() {
 		
 		$user_id = $_GET['id'];
@@ -219,11 +241,26 @@ class UsersController extends Zend_Controller_Action
 		$email = $_POST['email'];
 		$password = $_POST['password'];
 		$confirm = $_POST['confirm'];
-		if(isset($email) || isset($password)){
-			if($password == $confirm){
-			$data = $this->db->query("UPDATE users SET email= '".$email."',password='".$password."' where id = '".$user_id."'");
+		$this->view->msg="";
+		$data['email'] = $email;
+		if(isset($data['email']) || isset($password) && $data['email'] !=='' && $password !==''){
+			$valid=true;
+			$wh1 = "email='".$data['email']."'";
+			$avail = Core_BP_Custom::check_rec_count('users',$wh1);
+		}
+		if($avail){
+			$this->view->msg="email is already exists";
+		}
+		else{
+			if($valid){
+				$token = uniqid();
+				$em = array_shift($data['email']);
+				$pswd = Core_BP_Custom::encode1($token,$password);
+				$data = $this->db->query("UPDATE users SET email= '".$em."',password='".$pswd."' where id = '".$user_id."'");
+				$this->view->msg="succefully updated";
 			}
 		}
+		
 		
 	}
 	public function userdetailsAction(){
@@ -247,6 +284,35 @@ class UsersController extends Zend_Controller_Action
 
 	}	
 	public function gamedetailAction(){
+		$user_id = $_GET['user_id'];
+		$this->view->userid=$user_id;
+		$log_date_query = $this->db->query("select DISTINCT STR_TO_DATE(start_time, '%Y-%m-%d') as dates from users_log where user_id = '".$user_id."' ORDER BY start_time DESC ");
+		$log_date = $log_date_query->fetchAll();
+		
+		echo "<pre>";
+		$this->view->log_date=$log_date;
+		$display_dates =  array();
+		foreach ($log_date as $dates) {
+			$time_query = $this->db->query("select  * from users_log where user_id='".$user_id."' AND STR_TO_DATE(start_time, '%Y-%m-%d') =  '".implode(',',$dates)."'GROUP BY start_time ORDER BY start_time DESC ");
+			$log_time = $time_query->fetchAll();
+			
+			foreach ($log_time as $key => $value) {
+				$display_dates[$dates['dates']][] = $value;
+			}
+		}
+		$this->view->log_time=$display_dates;
+		$details_query = $this->db->query("select id from users_log where user_id = '".$user_id."' ");
+		$users_log_id = $details_query->fetchAll();
+		foreach ($users_log_id as $key => $log_id) {
+				$data3_query = $this->db->query("select  * from rates_log where user_id='".$user_id."' AND users_log_id =  '".implode(',',$log_id)."' ");
+				$rate_data = $data3_query->fetchAll();
+				foreach ($rate_data as $key => $value) {
+				$display_data[$log_id['id']][] = $value;
+			}
+			
+		}
+
+		$this->view->rates_log=$display_data;
 
 	}
 	public function deleteduserAction(){

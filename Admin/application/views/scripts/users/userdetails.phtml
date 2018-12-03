@@ -11,7 +11,7 @@
                         <h4 class="page-title">User <?php echo $this->userdetails['id'] ?> IN Overview</h4>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                    	<a href="adduser?id=<?php echo $this->userdetails['id'] ;?>" class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm">Add New User</a>
+                    	<a href="addnew" class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm">Add New User</a>
                     	<a href="edituser?id=<?php echo $this->userdetails['id'];?>" class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm">Edit User</a>
                     </div>
                     <!-- /.col-lg-12 -->
@@ -121,8 +121,8 @@
 													                	</thead>
 													                	<tbody>
 													                		<tr>
-													                			<td><a href="game-detail.php"></a>
-													                				<?php echo  date("H:i:s",strtotime($value1['total_time_spent']));  ?></td>
+													                			<td><a href="gamedetail?user_id=<?php echo $this->userdetails['id']  ?>">
+													                				<?php echo  date("H:i:s",strtotime($value1['total_time_spent']));  ?></a></td>
 													                			<td>52:60:00</td>
 													                			<td><?php echo $value1['rounds']  ?></td>
 													                			<td><?php echo $value1['image_view_log'] ?></td>
@@ -156,16 +156,5 @@
         <!-- /#page-wrapper -->
     </div>
     <!-- /#wrapper -->
-<script type="text/javascript">
-	$(function(){
-  var count = 0;
-  $('#collapse_1').click(function(){
-  	alert("in");
-    $('.panel-collapse').attr('id',count);
-    $('.panel-heading').attr('aria-controls',count);
-    count++;
-  });
-});
-</script>
- 
+
 </body>

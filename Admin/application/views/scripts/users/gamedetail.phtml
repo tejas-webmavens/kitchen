@@ -7,7 +7,7 @@
             <div class="container-fluid">
                 <div class="row bg-title">
                     <div class="col-lg-12 col-xs-12">
-                        <h4 class="page-title">User #KitchenKraze26589IN Game 6 Detail</h4>
+                        <h4 class="page-title">User <?php echo $this->userid['user_id']; ?>  IN Game 6 Detail</h4>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
@@ -18,194 +18,94 @@
 						<div class="flex-grid full-visitor-journey">
 							<div class="flex-col full-visitor-journey-map">
 								<ul class="list-unstyled">
-									<li>
-										<h4>15 Aug, 2018</h4>
-										<ul class="list-unstyled">
-											<li class="active"><a href="#">5:50 PM</a></li>
-											<li><a href="#">2:50 PM</a></li>
-										</ul>
-									</li>
-									<li>
-										<h4>13 Aug, 2018</h4>
-										<ul class="list-unstyled">
-											<li><a href="#">5:50 PM</a></li>
-											<li><a href="#">2:50 PM</a></li>
-										</ul>
-									</li>
+									<?php 
+										foreach ($this->log_date as $key1 => $value) { ?>					
+										<li>											
+										<h4> <?php echo  date('j F Y', strtotime( $value['dates'])); ?></h4>
+											<?php 
+											foreach ($this->log_time as $key => $time) {
+												foreach ($time as  $values) {
+													if($value['dates'] == $key ){?>
+													<ul class="list-unstyled">
+														<li class="active"><a href="#"><?php echo  date("H:i:s",strtotime($values['start_time']));  ?></a></li>
+													</ul>
+													<?php
+													}	
+												}
+											}  ?>
+										</li>
+								<?php } ?>
+									
 								</ul>
 							</div>
 							<div class="flex-col full-visitor-journey-details">
 	                    		<div class="white-box">
+	                    			<?php 
+	                    			foreach ($this->log_date as $key1 => $value) { 
+	                    					?>
 		                        	<ul class="timeline journey-timeline">
+		                        		<?php 
+											foreach ($this->log_time as $key => $time) {
+												foreach ($time as  $values) {
+													if($value['dates'] == $key ){?>
 		                        		<li>
+
 		                        			<div class="timeline-panel timeline-start">                        				
 		                                        <div class="timeline-heading">
-			                        				<h3 class="pull-left">5:50 PM, 13 Aug, 2018 </h3>
-			                        				<p class="pull-right">20 Image views + 2 Shares</p>
+			                        				<h3 class="pull-left"><?php  echo  date("h:i A  d F, Y ",strtotime( $values['start_time'])) ?> </h3>
+			                        				<p class="pull-right"><?php echo $values['image_view_log'] ?> Image views + <?php echo $values['share_count'] ?> Shares</p>
 		                                        </div>
+		                                   
 		                        			</div>
 		                        		</li>
+		                        		<?php 
+		                        	}
+		                
+		                                	foreach($this->rates_log as $key3=>$rates){
+		                                		foreach($rates as $ratevalue){
+
+		                                			if($values['id'] == $key3){
+		                                	?>
 		                                <li>
+		                                	
 		                                    <div class="timeline-panel">
-		                                        <div class="timeline-overview">Round 1 (10 Images + 1 Share)</div>
+		                                        <div class="timeline-overview">Round <?php echo $ratevalue['rounds'] ?> (<?php echo  count($ratevalue['image_id']) ?>  Images + 1 Share)</div>
 		                                        <div class="timeline-body">
 		                                            <div class="visitor-jry-details">
 		                                            	<div class="white-box">
 		                                            		<ul class="list-inline game-image-list">
 		                                            			<li>
 		                                            				<div class="round-img">
-		                                            					<img src="http://via.placeholder.com/130x130" class="img-responsive">
+		                                            					<img src="<?php echo $ratevalue['image_url'] ?>" class="img-responsive">
 		                                            				</div>
 		                                            				<div class="round-rating">
 		                                            					<ul class="list-unstyled">
 		                                            						<li>AI Rating:  <strong>0.8</strong></li>
-		                                            						<li>User Rating:  <strong>0.8</strong></li>
+		                                            						<li>User Rating:  <strong><?php echo $ratevalue['rate'] ?></strong></li>
 		                                            					</ul>
 		                                            				</div>
+		                                            				<?php if($ratevalue['shared']){ ?>
 		                                            				<div class="round-shared"><i class="fa fa-share-alt"></i></div>
+		                                            			<?php } ?>
 		                                            			</li>
-		                                            			<li>
-		                                            				<div class="round-img">
-		                                            					<img src="http://via.placeholder.com/130x130" class="img-responsive">
-		                                            				</div>
-		                                            				<div class="round-rating">
-		                                            					<ul class="list-unstyled">
-		                                            						<li>AI Rating:  <strong>0.8</strong></li>
-		                                            						<li>User Rating:  <strong>0.8</strong></li>
-		                                            					</ul>
-		                                            				</div>
-		                                            			</li>
-		                                            			<li>
-		                                            				<div class="round-img">
-		                                            					<img src="http://via.placeholder.com/130x130" class="img-responsive">
-		                                            				</div>
-		                                            				<div class="round-rating">
-		                                            					<ul class="list-unstyled">
-		                                            						<li>AI Rating:  <strong>0.8</strong></li>
-		                                            						<li>User Rating:  <strong>0.8</strong></li>
-		                                            					</ul>
-		                                            				</div>
-		                                            			</li>
-		                                            			<li>
-		                                            				<div class="round-img">
-		                                            					<img src="http://via.placeholder.com/130x130" class="img-responsive">
-		                                            				</div>
-		                                            				<div class="round-rating">
-		                                            					<ul class="list-unstyled">
-		                                            						<li>AI Rating:  <strong>0.8</strong></li>
-		                                            						<li>User Rating:  <strong>0.8</strong></li>
-		                                            					</ul>
-		                                            				</div>
-		                                            			</li>
-		                                            			<li>
-		                                            				<div class="round-img">
-		                                            					<img src="http://via.placeholder.com/130x130" class="img-responsive">
-		                                            				</div>
-		                                            				<div class="round-rating">
-		                                            					<ul class="list-unstyled">
-		                                            						<li>AI Rating:  <strong>0.8</strong></li>
-		                                            						<li>User Rating:  <strong>0.8</strong></li>
-		                                            					</ul>
-		                                            				</div>
-		                                            			</li>
-		                                            			<li>
-		                                            				<div class="round-img">
-		                                            					<img src="http://via.placeholder.com/130x130" class="img-responsive">
-		                                            				</div>
-		                                            				<div class="round-rating">
-		                                            					<ul class="list-unstyled">
-		                                            						<li>AI Rating:  <strong>0.8</strong></li>
-		                                            						<li>User Rating:  <strong>0.8</strong></li>
-		                                            					</ul>
-		                                            				</div>
-		                                            			</li>
+		                                            			
 		                                            		</ul>
+
 		                                            	</div>
 		                                            </div>
 		                                        </div>
 		                                    </div>
 		                                </li>
-		                                <li>
-		                                    <div class="timeline-panel">
-		                                        <div class="timeline-overview">Round 2 (10 Images + 1 Share)</div>
-		                                        <div class="timeline-body">
-		                                            <div class="visitor-jry-details">
-		                                            	<div class="white-box">
-		                                            		<ul class="list-inline game-image-list">
-		                                            			<li>
-		                                            				<div class="round-img">
-		                                            					<img src="http://via.placeholder.com/130x130" class="img-responsive">
-		                                            				</div>
-		                                            				<div class="round-rating">
-		                                            					<ul class="list-unstyled">
-		                                            						<li>AI Rating:  <strong>0.8</strong></li>
-		                                            						<li>User Rating:  <strong>0.8</strong></li>
-		                                            					</ul>
-		                                            				</div>
-		                                            			</li>
-		                                            			<li>
-		                                            				<div class="round-img">
-		                                            					<img src="http://via.placeholder.com/130x130" class="img-responsive">
-		                                            				</div>
-		                                            				<div class="round-rating">
-		                                            					<ul class="list-unstyled">
-		                                            						<li>AI Rating:  <strong>0.8</strong></li>
-		                                            						<li>User Rating:  <strong>0.8</strong></li>
-		                                            					</ul>
-		                                            				</div>
-		                                            			</li>
-		                                            			<li>
-		                                            				<div class="round-img">
-		                                            					<img src="http://via.placeholder.com/130x130" class="img-responsive">
-		                                            				</div>
-		                                            				<div class="round-rating">
-		                                            					<ul class="list-unstyled">
-		                                            						<li>AI Rating:  <strong>0.8</strong></li>
-		                                            						<li>User Rating:  <strong>0.8</strong></li>
-		                                            					</ul>
-		                                            				</div>
-		                                            			</li>
-		                                            			<li>
-		                                            				<div class="round-img">
-		                                            					<img src="http://via.placeholder.com/130x130" class="img-responsive">
-		                                            				</div>
-		                                            				<div class="round-rating">
-		                                            					<ul class="list-unstyled">
-		                                            						<li>AI Rating:  <strong>0.8</strong></li>
-		                                            						<li>User Rating:  <strong>0.8</strong></li>
-		                                            					</ul>
-		                                            				</div>
-		                                            				<div class="round-shared"><i class="fa fa-share-alt"></i></div>
-		                                            			</li>
-		                                            			<li>
-		                                            				<div class="round-img">
-		                                            					<img src="http://via.placeholder.com/130x130" class="img-responsive">
-		                                            				</div>
-		                                            				<div class="round-rating">
-		                                            					<ul class="list-unstyled">
-		                                            						<li>AI Rating:  <strong>0.8</strong></li>
-		                                            						<li>User Rating:  <strong>0.8</strong></li>
-		                                            					</ul>
-		                                            				</div>
-		                                            			</li>
-		                                            			<li>
-		                                            				<div class="round-img">
-		                                            					<img src="http://via.placeholder.com/130x130" class="img-responsive">
-		                                            				</div>
-		                                            				<div class="round-rating">
-		                                            					<ul class="list-unstyled">
-		                                            						<li>AI Rating:  <strong>0.8</strong></li>
-		                                            						<li>User Rating:  <strong>0.8</strong></li>
-		                                            					</ul>
-		                                            				</div>
-		                                            			</li>
-		                                            		</ul>
-		                                            	</div>
-		                                            </div>
-		                                        </div>
-		                                    </div>
-		                                </li>
+		                            <?php
+		                            } 
+		                        }
+		                            }	
+		                          }	
+		                                    }
+		                    }  	 ?>
 		                            </ul>
+		                        <?php  ?>
+		                             
 	                        	</div>
 	                        </div>
 	                    </div>
