@@ -54,7 +54,7 @@ class Plugin_ACL extends Core_BP_ACL {
 			}
 			if(!$_authorized && $public_urls[$current_controller]!="*" && !@in_array($current_action, $public_urls[$current_controller])) {
 				if(!$session->user_id) {
-					header("Location: /user/login/?ref=".base64_encode($_SERVER["REQUEST_URI"]));
+					header("Location: http://localhost/kitchen/Admin/public/index/login");
 					exit;
 					
 				}
@@ -69,7 +69,7 @@ class Plugin_ACL extends Core_BP_ACL {
 			
 			if($current_action!="fromcore" && $public_urls[$current_controller]!="*" && !@in_array($current_action, $public_urls[$current_controller])) {
 				if(!$session->user_id) {
-					header("Location: /user/login/?ref=".base64_encode($_SERVER["REQUEST_URI"]));
+					header("Location: http://localhost/kitchen/Admin/public/index/login");
 					exit;
 					
 				}

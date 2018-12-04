@@ -18,6 +18,7 @@ if($method =='POST'){
 	$wh1 = "token='".$token."' AND id='".$u_id."' ";
 	$check = check_rec_count('users',$wh1,$dbh);
 	if(!$check){
+		$res['code'] = '106';
 		$res['msg'] = $global_messages['106'];
 	}
 	else{
@@ -27,8 +28,10 @@ if($method =='POST'){
 		$data['image_link'] = get('image_link');
 		try{
 			insert('share_log',$data,$dbh);
+			$res['code'] = '200';
 			$res['msg'] = $global_messages['307'];
 		}catch(exception $e){
+			$res['code'] = '308';
 			$res['msg'] = $global_messages['308'];
 		}
 	}
@@ -37,7 +40,7 @@ if($method =='POST'){
 				$req = array('user_id'=>$data['user_id'],'image_id'=>$data['image_id'],'image_link'=>$data['image_link'],'token'=>$token);
 				$api_log = json_encode($req);
 				$r1['request_params'] = $api_log;
-				$req = array('msg'=>$res['msg']);
+				$req = array('code'=>$res['code'],'msg'=>$res['msg']);
 				$api_log_msg = json_encode($req);
 				$r1['response_params']=$api_log_msg;
 				insert('api_log',$r1,$dbh);

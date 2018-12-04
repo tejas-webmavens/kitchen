@@ -21,6 +21,7 @@ if($method=='POST'){
 		$avail = check_rec_count('users',$wh1,$dbh);
 	}
 	if(!$avail){
+		$res['code'] = '104';
 		$res['msg'] = $global_messages['104'];
 	}
 	else{
@@ -33,21 +34,26 @@ if($method=='POST'){
 				$data = array();
 				$data['type'] = get('type');
 				update('users',$wh1,$data,"",$dbh);
+				$res['code'] = '200';
 				$res['msg'] = $global_messages['200'];
 				$res['token'] = $out;
 				}
 				else if($status == "deactive"){
+					$res['code'] = '206';
 					$res['msg'] = $global_messages['206'];
 				}
 				else if($status == "deleted"){
+					$res['code'] = '211';
 					$res['msg'] = $global_messages['211'];
 				}
 				else if($status == "blocked"){
+					$res['code'] = '212';
 					$res['msg'] = $global_messages['212'];
 				}
 				
 			}
 			else{
+				$res['code'] = '210';
 				$res['msg'] = $global_messages['210'];
 			}
 		}
@@ -56,12 +62,12 @@ if($method=='POST'){
 				$api_log = json_encode($req);
 				$r1['request_params'] = $api_log;
 				if(isset($res['token'])){
-					$req = array('token'=>$out,'msg'=>$res['msg']);
+					$req = array('token'=>$out,'code'=>$res['code'],'msg'=>$res['msg']);
 					$api_log_msg = json_encode($req);
 					$r1['response_params'] = $api_log_msg;
 				}
 				else{
-					$req = array('msg'=>$res['msg']);
+					$req = array('code'=>$res['code'],'msg'=>$res['msg']);
 					$api_log_msg = json_encode($req);
 					$r1['response_params']=$api_log_msg;
 				}	 

@@ -21,14 +21,12 @@ if($method =='POST'){
 	$wh1 = "token='".$token."' AND password='".$old_data['password']."' ";
 	$check = check_rec_count('users',$wh1,$dbh);
 	if(!$check){
+		$res['code'] = '302';
 		$res['msg'] = $global_messages['302'];
 	}
 	else{
 		 	$new_password = get('password');
-			if(!preg_match('/^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%]{8,12}$/', $new_password)) {
-				$res['msg'] = $global_messages['202'];
-			}
-			else{
+			
 					$retype = get('retype');
 					if($new_password == $retype)
 					{
@@ -37,18 +35,20 @@ if($method =='POST'){
 						$data['password'] = $password; 
 						try{
 							update('users',$wh,$data,"",$dbh);
-							$res['id'] = $id;
+							$res['code'] = '200';
 							$res['msg'] = $global_messages['304'];
 						}
 						catch(Excption $e){
+							$res['code'] = '305';
 							$res['msg'] = $global_messages['305'];
 						}
 					}
 					else{
+						$res['code'] = '306';
 							$res['msg'] = $global_messages['306'];
 					}
 					
-				}	
+					
 	}
 				$r1 = array();
 				$r1['called_api'] = 'changepassword';
@@ -56,12 +56,12 @@ if($method =='POST'){
 				$api_log = json_encode($req);
 				$r1['request_params'] = $api_log;
 				if(isset($res['id'])){
-					$req = array('token'=>$out,'msg'=>$res['msg']);
+					$req = array('token'=>$out,'msg'=>$res['msg'],'code'=>$res['code']);
 					$api_log_msg = json_encode($req);
 					$r1['response_params'] = $api_log_msg;
 				}
 				else{
-					$req = array('msg'=>$res['msg']);
+					$req = array('code'=>$res['code'],'msg'=>$res['msg']);
 					$api_log_msg = json_encode($req);
 					$r1['response_params']=$api_log_msg;
 				}	 

@@ -37,4 +37,11 @@ function check_status($table,$where,$con){
     $result = sql($query,$con);
 	return $result;
 }
+function get_images($table,$con){
+    global $dbh;
+    $sets = array();
+    $query = "select image_id from `{$table}`  limit 8";
+    $result = sql($query,$con);
+    return $result;
+}
 ?>

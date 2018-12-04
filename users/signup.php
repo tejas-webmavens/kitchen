@@ -23,6 +23,7 @@ if($method=='POST'){
 	
 
 	if($avail){
+		$res['code'] = '105';
 		$res['msg'] = $global_messages['105'];
 	}
 	else{
@@ -31,11 +32,13 @@ if($method=='POST'){
 			$data['password'] = encode($data['token'],$pwd);			
 			$id = insert('users',$data,$dbh);
 			$res['id'] = $id;
+			$res['code'] = '200';
 			$res['msg'] = $global_messages['300'];
 			$res['token'] = $data['token'];
 		}
 		else{
-			$res['msg'] = $global_messages['301'];
+			$res['code'] = '402';
+			$res['msg'] = $global_messages['402'];
 		}	
 	}
 	$r1 = array();
@@ -43,12 +46,12 @@ if($method=='POST'){
 	$api_log = json_encode($req);
 	$r1['request_params'] = $api_log;
 	if(isset($res['token'])){
-		$req = array('token'=>$data['token'],'id'=>$id,'msg'=>$res['msg']);
+		$req = array('token'=>$data['token'],'id'=>$id,'code'=>$res['code'],'msg'=>$res['msg']);
 		$api_log_msg = json_encode($req);
 		$r1['response_params'] = $api_log_msg;
 	}
 	else{
-		$req = array('msg'=>$res['msg']);
+		$req = array('code'=>$res['code'],'msg'=>$res['msg']);
 		$api_log_msg = json_encode($req);
 		$r1['response_params']=$api_log_msg;
 		}	 

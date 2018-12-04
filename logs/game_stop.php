@@ -18,6 +18,7 @@ if($method =='POST'){
 	$wh1 = "token='".$token."' AND id='".$u_id."' ";
 	$check = check_rec_count('users',$wh1,$dbh);
 	if(!$check){
+		$res['code'] = '105';
 		$res['msg'] = $global_messages['105'];
 	}
 	else{
@@ -25,6 +26,7 @@ if($method =='POST'){
 			$wh1 = "id='".$id."' AND id='".$u_id."' ";
 			$avail = check_rec_count('users',$wh1,$dbh);
 			if($avail){
+				$res['code'] = '312';
 				$res['msg'] = $global_messages['312'];
 			}
 			else{
@@ -35,8 +37,10 @@ if($method =='POST'){
 				$wh3 = "id='".$data['id']."'";
 				try{				
 					update('users_log',$wh3,$data,"",$dbh);
+					$res['code'] = '200';
 					$res['msg'] = $global_messages['313'];
 				}catch(exception $e){
+					$res['code'] = '314';
 					$res['msg'] = $global_messages['314'];
 				}
 			}
@@ -47,7 +51,7 @@ if($method =='POST'){
 				$req = array('id'=>$data['id'],'user_id'=>$data['user_id'],'end_time'=>$data['end_time']);
 				$api_log = json_encode($req);
 				$r1['request_params'] = $api_log;
-				$req = array('msg'=>$res['msg']);
+				$req = array('code'=>$res['code'],,'msg'=>$res['msg']);
 				$api_log_msg = json_encode($req);
 				$r1['response_params']=$api_log_msg;
 				insert('api_log',$r1,$dbh);

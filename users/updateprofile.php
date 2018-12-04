@@ -24,9 +24,11 @@ if($method =='POST'){
 		try{
 						update('users',$wh,$data,"",$dbh);
 							$res['id'] = $token;
+							$res['code'] = '200';
 							$res['msg'] = $global_messages['301'];
 						}
 						catch(Excption $e){
+							$res['code'] = '303';
 							$res['msg'] = $global_messages['303'];
 						}
        	
@@ -39,12 +41,12 @@ if($method =='POST'){
 				$api_log = json_encode($req);
 				$r1['request_params'] = $api_log;	
 				if(isset($res['id'])){
-					$req = array('id'=>$token,'msg'=>$res['msg']);
+					$req = array('id'=>$token,'code'=>$res['code'],'msg'=>$res['msg']);
 					$api_log_msg = json_encode($req);
 					$r1['response_params'] = $api_log_msg;
 				}
 				else{
-					$req = array('msg'=>$res['msg']);
+					$req = array('code'=>$res['code'],'msg'=>$res['msg']);
 					$api_log_msg = json_encode($req);
 					$r1['response_params']=$api_log_msg;
 				}	 

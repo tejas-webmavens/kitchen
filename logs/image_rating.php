@@ -23,18 +23,21 @@ if($method =='POST'){
 	else{
 		$data = array();
 		$rate = get('rate');
-		if(preg_match('/([0-1]{1,})\.([0-1]{1,2})/', $rate) == 1) {
+		if(preg_match('/([0-1]{1,})\.([0-10]{0,10})/', $rate) == 1) {
     
 			$data['rate'] = $rate;
 			$data['user_id'] = $u_id;
 			$data['image_id'] = get('image_id');
 			$data['image_url'] = get('image_url');
 			$data['users_log_id'] = get('users_log_id');
+			$data['rounds'] = get('rounds');
 			
 			try{
 				insert('rates_log',$data,$dbh);
+				$res['code'] = '200';
 				$res['msg'] = $global_messages['307'];
 			}catch(exception $e){
+				$res['code'] = '308';
 				$res['msg'] = $global_messages['308'];
 			}
 		}
@@ -50,7 +53,7 @@ if($method =='POST'){
 				$req = array('user_id'=>$data['user_id'],'image_id'=>$data['image_id'],'image_url'=>$data['image_url'],'users_log_id'=>$data['user_log_id']);
 				$api_log = json_encode($req);
 				$r1['request_params'] = $api_log;
-				$req = array('msg'=>$res['msg']);
+				$req = array('code'=>$res['code'],'msg'=>$res['msg']);
 				$api_log_msg = json_encode($req);
 				$r1['response_params']=$api_log_msg;
 				insert('api_log',$r1,$dbh);

@@ -22,6 +22,7 @@ if($method =='POST'){
 	$wh = "token='".$token."'";
 	$u_id = get_id('users',$wh,$dbh);
 	if(empty($u_id)){
+		$res['code'] = '309';
 		$res['msg'] = $global_messages['309'];
 	}
 	else{
@@ -29,10 +30,12 @@ if($method =='POST'){
 		$data['users_log_id'] = get('users_log_id');
 	try{
 	 insert('image_view_log',$data,$dbh);
+	 $res['code'] = '200';
 	$res['msg'] = $global_messages['310'];
 	$res['token'] = $token;
 	}
 	catch(exception $e){
+		$res['code'] = '311';
 		$res['msg'] = $global_messages['311'];
 	}
 	}
@@ -42,12 +45,12 @@ if($method =='POST'){
 				$api_log = json_encode($req);
 				$r1['request_params'] = $api_log;
 				if(isset($res['token'])){
-					$req = array('token'=>$token,'msg'=>$res['msg']);
+					$req = array('token'=>$token,'code'=>$res['code'],'msg'=>$res['msg']);
 					$api_log_msg = json_encode($req);
 					$r1['response_params'] = $api_log_msg;
 				}
 				else{
-					$req = array('msg'=>$res['msg']);
+					$req = array('code'=>$res['code'],'msg'=>$res['msg']);
 					$api_log_msg = json_encode($req);
 					$r1['response_params']=$api_log_msg;
 				}	 

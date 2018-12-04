@@ -8,7 +8,7 @@ include_once('../inc/res_msg.php');
 global $dbh;
 $method = $_SERVER['REQUEST_METHOD'];
 if($method=='POST'){
-	echo "in";
+	
 	$data = array();
 	$data['name'] = get('name');
 	$data['email'] = get('email');
@@ -18,8 +18,10 @@ if($method=='POST'){
 	try{
 		$id = insert('app_ratings',$data,$dbh);
 		$res['id']= $id;
+		$res['code'] = '200';
 		$res['msg']= $global_messages['400'];
 	}catch(exception $e){
+		$res['code'] = '401';
 		$res['msg']= $global_messages['401'];
 	}
 	$r1 = array();
@@ -27,12 +29,12 @@ if($method=='POST'){
 	$api_log = json_encode($req);
 	$r1['request_params'] = $api_log;
 	if(isset($res['token'])){
-		$req = array('id'=>$id;'token'=>$data['token'],'msg'=>$res['msg']);
+		$req = array('id'=>$id;'token'=>$data['token'],'code'=>$res['code'],'msg'=>$res['msg']);
 		$api_log_msg = json_encode($req);
 		$r1['response_params'] = $api_log_msg;
 	}
 	else{
-		$req = array('msg'=>$res['msg']);
+		$req = array('code'=>$res['code'],'msg'=>$res['msg']);
 		$api_log_msg = json_encode($req);
 		$r1['response_params']=$api_log_msg;
 		}	 

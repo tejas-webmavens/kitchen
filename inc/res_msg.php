@@ -28,4 +28,5 @@
 	$global_messages['316'] = 'Game failed to start';
 	$global_messages['400'] = 'Thank you for rate us';
 	$global_messages['401'] = 'Rate is not submitted';
+	$global_messages['402'] = 'Feilds should not be empty';
 ?>
