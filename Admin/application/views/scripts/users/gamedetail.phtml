@@ -19,94 +19,99 @@
 							<div class="flex-col full-visitor-journey-map">
 								<ul class="list-unstyled">
 									<?php 
-										foreach ($this->log_date as $key1 => $value) { ?>					
+										foreach ($this->log_date as $value) { ?>					
 										<li>											
 										<h4> <?php echo  date('j F Y', strtotime( $value['dates'])); ?></h4>
 											<?php 
 											foreach ($this->log_time as $key => $time) {
-												foreach ($time as  $values) {
+
+												foreach ($time as $times) {
 													if($value['dates'] == $key ){?>
 													<ul class="list-unstyled">
-														<li class="active"><a href="#"><?php echo  date("H:i:s",strtotime($values['start_time']));  ?></a></li>
+														<li class="active"><a href="#"><?php echo  date("H:i:s",strtotime($times));  ?></a></li>
 													</ul>
 													<?php
-													}	
+												}
 												}
 											}  ?>
 										</li>
-								<?php } ?>
+								<?php }?>
 									
 								</ul>
 							</div>
 							<div class="flex-col full-visitor-journey-details">
-	                    		<div class="white-box">
-	                    			<?php 
-	                    			foreach ($this->log_date as $key1 => $value) { 
+								<?php 
+	                    			foreach ($this->rates_log as $key => $time) {
+												foreach ($time as  $values) { 
 	                    					?>
+	                    		<div class="white-box">
 		                        	<ul class="timeline journey-timeline">
-		                        		<?php 
-											foreach ($this->log_time as $key => $time) {
-												foreach ($time as  $values) {
-													if($value['dates'] == $key ){?>
 		                        		<li>
-
-		                        			<div class="timeline-panel timeline-start">                        				
+		                        			<div class="timeline-panel timeline-start">              			
 		                                        <div class="timeline-heading">
 			                        				<h3 class="pull-left"><?php  echo  date("h:i A  d F, Y ",strtotime( $values['start_time'])) ?> </h3>
 			                        				<p class="pull-right"><?php echo $values['image_view_log'] ?> Image views + <?php echo $values['share_count'] ?> Shares</p>
-		                                        </div>
-		                                   
+		                                        </div>		                                   
 		                        			</div>
 		                        		</li>
-		                        		<?php 
-		                        	}
-		                
-		                                	foreach($this->rates_log as $key3=>$rates){
-		                                		foreach($rates as $ratevalue){
-
-		                                			if($values['id'] == $key3){
+		                        		  <?php 
+		                        		  		
+		                        				foreach ($values['rounds'] as $roundkey=> $ratevalue) {
+		                        		// print_r($ratevalue);				
+		                        				
 		                                	?>
 		                                <li>
-		                                	
+		                              
 		                                    <div class="timeline-panel">
-		                                        <div class="timeline-overview">Round <?php echo $ratevalue['rounds'] ?> (<?php echo  count($ratevalue['image_id']) ?>  Images + 1 Share)</div>
+		                                        <div class="timeline-overview">Round <?php echo $roundkey;?> (<?php echo count($ratevalue['viewed']) ?>  Images + <?php echo count($ratevalue['shared']) ?> Share)</div>
+
+		                                     <?php  ?>
 		                                        <div class="timeline-body">
+
 		                                            <div class="visitor-jry-details">
+		                                      		
 		                                            	<div class="white-box">
 		                                            		<ul class="list-inline game-image-list">
+		                                            		 <?php 	foreach ($ratevalue['data'] as $r1) {
+
+		                                            		  ?>
 		                                            			<li>
+		                                            		
 		                                            				<div class="round-img">
-		                                            					<img src="<?php echo $ratevalue['image_url'] ?>" class="img-responsive">
+		                                            					<img src="<?php echo $r1['image_url'] ?>" class="img-responsive">
 		                                            				</div>
 		                                            				<div class="round-rating">
 		                                            					<ul class="list-unstyled">
 		                                            						<li>AI Rating:  <strong>0.8</strong></li>
-		                                            						<li>User Rating:  <strong><?php echo $ratevalue['rate'] ?></strong></li>
+		                                            						<li>User Rating:  <strong><?php echo $r1['rate'] ?></strong></li>
 		                                            					</ul>
 		                                            				</div>
-		                                            				<?php if($ratevalue['shared']){ ?>
+		                                            				<?php if($r1['shared']>0){ ?>
 		                                            				<div class="round-shared"><i class="fa fa-share-alt"></i></div>
-		                                            			<?php } ?>
+		                                            			<?php  }?>
 		                                            			</li>
-		                                            			
+		                                            			 <?php } ?>
 		                                            		</ul>
 
 		                                            	</div>
+		                                            	
 		                                            </div>
+		                                           
 		                                        </div>
+		                                        <?php   ?>
 		                                    </div>
 		                                </li>
 		                            <?php
-		                            } 
+		                        
+		                           
 		                        }
-		                            }	
-		                          }	
-		                                    }
-		                    }  	 ?>
+		                    	 ?>
 		                            </ul>
-		                        <?php  ?>
-		                             
+		                          
 	                        	</div>
+	                        	 <?php  }
+		                        }
+		                          ?>   
 	                        </div>
 	                    </div>
 	                </div>

@@ -286,33 +286,70 @@ class UsersController extends Zend_Controller_Action
 	public function gamedetailAction(){
 		$user_id = $_GET['user_id'];
 		$this->view->userid=$user_id;
-		$log_date_query = $this->db->query("select DISTINCT STR_TO_DATE(start_time, '%Y-%m-%d') as dates from users_log where user_id = '".$user_id."' ORDER BY start_time DESC ");
+		$log_date_query = $this->db->query("select id, STR_TO_DATE(start_time, '%Y-%m-%d') as dates from users_log where user_id = '".$user_id."' GROUP BY STR_TO_DATE(start_time, '%Y-%m-%d') ORDER BY start_time DESC ");
 		$log_date = $log_date_query->fetchAll();
-		
+	
 		echo "<pre>";
 		$this->view->log_date=$log_date;
 		$display_dates =  array();
+
+		$count = 0;
 		foreach ($log_date as $dates) {
-			$time_query = $this->db->query("select  * from users_log where user_id='".$user_id."' AND STR_TO_DATE(start_time, '%Y-%m-%d') =  '".implode(',',$dates)."'GROUP BY start_time ORDER BY start_time DESC ");
+			$query_get_users_log = "select * from users_log where user_id='".$user_id."' AND STR_TO_DATE(start_time, '%Y-%m-%d') = '".$dates['dates']."' ORDER BY start_time DESC ";
+			$time_query = $this->db->query($query_get_users_log);
 			$log_time = $time_query->fetchAll();
 			
-			foreach ($log_time as $key => $value) {
-				$display_dates[$dates['dates']][] = $value;
-			}
-		}
-		$this->view->log_time=$display_dates;
-		$details_query = $this->db->query("select id from users_log where user_id = '".$user_id."' ");
-		$users_log_id = $details_query->fetchAll();
-		foreach ($users_log_id as $key => $log_id) {
-				$data3_query = $this->db->query("select  * from rates_log where user_id='".$user_id."' AND users_log_id =  '".implode(',',$log_id)."' ");
-				$rate_data = $data3_query->fetchAll();
-				foreach ($rate_data as $key => $value) {
-				$display_data[$log_id['id']][] = $value;
-			}
-			
-		}
+			foreach ($log_time as $_log_time) {
+				$display_dates[$dates['dates']][] = $_log_time['start_time'];
+				$display_dates[$dates['id']][] = $_log_time['start_time'];
+				$display_data[$_log_time['id']][$count]['id'] = $_log_time['id'];
+				$display_data[$_log_time['id']][$count]['start_time'] = $_log_time['start_time'];
+				$display_data[$_log_time['id']][$count]['share_count'] = $_log_time['share_count'];
+				$display_data[$_log_time['id']][$count]['image_view_log'] = $_log_time['image_view_log'];
 
+				$query_rates_log = "select * from rates_log where user_id='".$user_id."' AND users_log_id ='".$_log_time['id']."' order by rounds";
+				$res_rates_log = $this->db->query($query_rates_log);
+				$data_rates_log = $res_rates_log->fetchAll();
+				// print_r($data_rates_log);
+				$display_data[$_log_time['id']][$count]['images'] = $data_rates_log;
+
+				foreach ($data_rates_log as  $rounds_data) {
+					// $display_data[$rounds_data['rounds']] = $data_rates_log;
+				$query_rounds = "select * from rates_log where user_id='".$user_id."' AND users_log_id ='".$_log_time['id']."' AND rounds ='".$rounds_data['rounds']."' ";
+
+				$res_rounds = $this->db->query($query_rounds);
+				$data_rounds = $res_rounds->fetchAll();
+					foreach($data_rounds as $rounds_count){
+
+						 $display_data[$_log_time['id']][$count]['rounds'][$rounds_data['rounds']]['data'] = $data_rounds;
+						  $display_data[$_log_time['id']][$count]['rounds'][$rounds_data['rounds']]['shared'] = $rounds_data['shared'];
+						  $display_data[$_log_time['id']][$count]['rounds'][$rounds_data['rounds']]['viewed'] = $rounds_data['viewed'];
+					}
+				}
+				// $display_data[$_log_time['id']][$count]['rounds'] = $data_rates_log;
+					
+
+				
+			}
+			$count++;
+		}
+		// print_r($display_data);
+// die;
+		$this->view->log_time=$display_dates;
 		$this->view->rates_log=$display_data;
+		// $details_query = $this->db->query("select id from users_log where user_id = '".$user_id."' ");
+		// $users_log_id = $details_query->fetchAll();
+		// foreach ($users_log_id as $key => $log_id) {
+		// 		$data3_query = $this->db->query("select  * from rates_log where user_id='".$user_id."' AND users_log_id =  '".implode(',',$log_id)."' ");
+		// 		$rate_data = $data3_query->fetchAll();
+		// 		foreach ($rate_data as $key => $value) {
+		// 		$display_data[$log_id['id']][] = $value;
+		// 	}
+			
+		// }
+// print_r($display_data);
+// die;
+		
 
 	}
 	public function deleteduserAction(){
