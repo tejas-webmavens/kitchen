@@ -137,7 +137,13 @@ class IndexController extends Zend_Controller_Action
 			$res = $this->db->query("SELECT id,username FROM m_users WHERE username='$username' AND `password`='$_pass'");
 
 			if($row=$res->fetch()) {
-
+				$_SESSION['userId'] = $row['id'];
+				if(!isset($_SESSION['userId']))
+					{
+					    // not logged in
+					    header('Location: http://localhost/kitchen/Admin/public/index/login');
+					    exit();
+					}
 				$session = Core_BP_Session::get();
 				
 				$session->user_id = $row["id"];
