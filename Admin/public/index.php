@@ -33,10 +33,10 @@ $application = new Zend_Application(
 
 $autoloader = Zend_Loader_Autoloader::getInstance();
 $autoloader->registerNamespace('Core_BP_');
-$autoloader->registerNamespace('Plugin_');
+// $autoloader->registerNamespace('Plugin_');
 
 
-Zend_Controller_Front::getInstance()->registerPlugin(new Plugin_ACL());
+// Zend_Controller_Front::getInstance()->registerPlugin(new Plugin_ACL());
 //Zend_Controller_Front::getInstance()->registerPlugin(new Plugin_Modal());
 
 $core_config = new Zend_Config_Ini(CORE_PATH ."/configs/application.ini", APPLICATION_HOST);

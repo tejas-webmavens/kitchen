@@ -7,7 +7,9 @@ class UsersController extends Zend_Controller_Action
 	{
 	      $this->start_date = Core_BP_Session::getVal("start_date");
 		  $this->end_date = Core_BP_Session::getVal("end_date");
-		  $this->Count = Core_BP_Session::getVal("Count");
+		  $this->activeCount = Core_BP_Session::getVal("activeCount");
+		  $this->deactiveCount = Core_BP_Session::getVal("deactiveCount");
+
 
 			if($this->start_date==''){
 				$start_date = date('Y-m-d');
@@ -133,9 +135,10 @@ class UsersController extends Zend_Controller_Action
 			$this->view->start_date = $start_date;
 			$this->view->end_date = $end_date;
 			$this->view->Count = $Count;
-			Core_BP_Session::setVal("Count", $Count);
+			Core_BP_Session::setVal("activeCount", $Count);
 			$this->view->active = $data;
 			$this->view->pagination = Core_BP_Components_Pagination::display($Count, $offset, $this->perpage, $page, 'http://localhost/kitchen/Admin/public/users/activeuser', $link_param);	
+			
 		
 	}
 	public function deactiveuserAction(){
@@ -228,6 +231,7 @@ class UsersController extends Zend_Controller_Action
 			$this->view->start_date = $start_date;
 			$this->view->end_date = $end_date;
 			$this->view->Count = $Count;
+			Core_BP_Session::setVal("deactiveCount", $Count);
 			$this->view->deactive = $data;
 			$this->view->pagination = Core_BP_Components_Pagination::display($Count, $offset, $this->perpage, $page, 'http://localhost/kitchen/Admin/public/users/activeuser', $link_param);
 
@@ -238,26 +242,31 @@ class UsersController extends Zend_Controller_Action
 		$res_details = $details_query->fetchAll();
 		$details = array_shift($res_details);	
 		$this->view->useredit = $details;
+		$token = $details['token'];
+		$em = $details['email'];
+		$old_pwd = $details['password'];
+		// $old_password = Core_BP_Custom::decode1($token,$em);
+		// $data_email = Core_BP_Custom::check_token();
 		$email = $_POST['email'];
 		$password = $_POST['password'];
 		$confirm = $_POST['confirm'];
 		$this->view->msg="";
-		$data['email'] = $email;
-		if(isset($data['email']) || isset($password) && $data['email'] !=='' && $password !==''){
-			$valid=true;
-			$wh1 = "email='".$data['email']."'";
-			$avail = Core_BP_Custom::check_rec_count('users',$wh1);
-		}
-		if($avail){
-			$this->view->msg="email is already exists";
-		}
-		else{
-			if($valid){
-				$token = uniqid();
-				$em = array_shift($data['email']);
-				$pswd = Core_BP_Custom::encode1($token,$password);
-				$data = $this->db->query("UPDATE users SET email= '".$em."',password='".$pswd."' where id = '".$user_id."'");
-				$this->view->msg="succefully updated";
+		// $data['email'] = $email;
+		if(isset($email) || isset($password) && $email !=='' && $password !==''){
+			if($em !== $email){
+				$wh1 = "email='".$data['email']."'";
+				$avail = Core_BP_Custom::check_rec_count('users',$wh1);
+				if($avail){
+					 $data['email'] = $email;
+					 $data = $this->db->query("UPDATE users SET email= '".$email."' where id = '".$user_id."'");
+					$this->view->msg="succefully updated email";	
+				}
+				$this->view->msg="email already exists";
+			}
+			if($old_pwd !== $password){
+				$new_password = Core_BP_Custom::encode1($token,$password);
+				$data = $this->db->query("UPDATE users SET password='".$new_password."' where id = '".$user_id."'");
+				$this->view->msg="succefully updated password";
 			}
 		}
 		

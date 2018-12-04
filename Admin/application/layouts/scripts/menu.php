@@ -7,10 +7,7 @@
                 <ul class="nav navbar-top-links navbar-left hidden-xs">
                     <li><a href="javascript:void(0)" class="open-close hidden-xs waves-effect waves-light"><i class="icon-menu ti-align-left"></i></a></li>
                     <li>
-                        <form role="search" class="app-search hidden-xs">
-                            <input type="text" placeholder="Search..." class="form-control">
-                            <a href=""><i class="fa fa-search"></i></a>
-                        </form>
+                        
                     </li>
                 </ul>
                 <ul class="nav navbar-top-links navbar-right pull-right">
@@ -43,8 +40,8 @@
                 	<li class="active"> <a href="javascript:void(0);" class="waves-effect"><i class="ti-user fa-fw"></i> <span class="hide-menu">Users <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
                     	<li> <a href="http://localhost/kitchen/Admin/public/users/addnew">Add new user</a> </li>
-                        <li> <a href="http://localhost/kitchen/Admin/public/users/activeuser">Active <span class="label label-rouded label-info pull-right"><?php echo $this->Count ?></span></a> </li>
-                        <li> <a href="http://localhost/kitchen/Admin/public/users/deactiveuser">Deactivated <span class="label label-warning label-info pull-right"><?php echo count($this->deactive) ?></span></a> </li>
+                        <li> <a href="http://localhost/kitchen/Admin/public/users/activeuser">Active <span class="label label-rouded label-info pull-right"><?php echo $this->activeCount ?></span></a> </li>
+                        <li> <a href="http://localhost/kitchen/Admin/public/users/deactiveuser">Deactivated <span class="label label-warning label-info pull-right"><?php echo $this->deactiveCount ?></span></a> </li>
                     </ul>
                 </li>
 

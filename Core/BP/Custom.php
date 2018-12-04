@@ -32,6 +32,23 @@ class Core_BP_Custom
 		    }
     	return $hash;
 	}
+    function decode1($string, $key) {
+        $key = sha1($key);
+        $strLen = strlen($string);
+        $keyLen = strlen($key);
+        $j = 0;
+        $hash = "";
+        for ($i = 0; $i < $strLen; $i+=2) {
+            $ordStr = hexdec(base_convert(strrev(substr($string, $i, 2)), 36, 16));
+            if ($j == $keyLen) {
+                $j = 0;
+            }
+            $ordKey = ord(substr($key, $j, 1));
+            $j++;
+            $hash .= chr($ordStr - $ordKey);
+        }
+        return $hash;
+    }
 	public function check_rec_count($table_name,  $wh) {
         $db = Zend_Db_Table::getDefaultAdapter();
         //select data
@@ -46,5 +63,13 @@ class Core_BP_Custom
             //insert record
            return true;
         }
+    }
+    public function check_token($table, $where){
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $sets = array();
+        $query = "select email from `{$table}` where token='{$where}'";
+        $res = $db->query($query);
+        $_data = $res->fetch();
+        return $result;
     }	
 }
