@@ -8,12 +8,18 @@ include_once('../inc/res_msg.php');
 global $dbh;
 $method = $_SERVER['REQUEST_METHOD'];
 if($method =='POST'){
-	$headers = apache_request_headers();
-   foreach ($headers as $header => $value) {
-    if($header == "token"){
-    	$token = $value;
-    }
-}
+	
+	if(!function_exists('apache_request_headers')){
+		$token = $_SERVER['HTTP_TOKEN'];
+	}
+	else{
+		$headers = apache_request_headers();
+	   	foreach ($headers as $header => $value) {
+	    	if($header == "token"){
+	    		$token = $value;
+	    	}
+		}
+	}
 	$email= check_token('users',$token,$dbh);
 	$out = array_shift(array_shift($email));
 	$old_password = get('oldpassword');
