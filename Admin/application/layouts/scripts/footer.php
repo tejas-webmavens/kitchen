@@ -1,6 +1,6 @@
 
 
-    <footer class="footer text-center"> 2018 &copy; kitchenkraze </footer>
+    <footer class="footer text-center"><?php echo date("Y"); ?> &copy; kitchenkraze </footer>
     <!-- jQuery -->
     <!-- <script src="http://localhost/kitchen/Admin/public/assets/js/jquery.min.js"></script> -->
     <!-- Bootstrap Core JavaScript -->

@@ -71,5 +71,24 @@ class Core_BP_Custom
         $res = $db->query($query);
         $_data = $res->fetch();
         return $result;
+    }
+    public function count_data($table,$status,$start_date,$end_date){
+        $db = Zend_Db_Table::getDefaultAdapter();
+
+        $query = "select COUNT(id) AS count from `{$table}` WHERE status='{$status}' ";
+        
+            if($this->start_date ==''){
+                $query .= "AND STR_TO_DATE(audit_created_date, '%Y-%m-%d')=CURDATE()";
+            }
+            else{
+                $query .= "AND STR_TO_DATE(audit_created_date, '%Y-%m-%d')>='". $this->start_date."' AND STR_TO_DATE(audit_created_date, '%Y-%m-%d')<='". $this->end_date."'";
+            }
+            $res = $this->db->query($query);
+            $Count =$res->fetchAll();
+            $c = array_shift($Count);
+            $Count_data = $c['count'];
+            // echo $Count_data;die;    
+            return $Count_data;
+            
     }	
 }
