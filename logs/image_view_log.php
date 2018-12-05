@@ -8,18 +8,7 @@ include_once('../inc/res_msg.php');
 global $dbh;
 $method = $_SERVER['REQUEST_METHOD'];
 if($method =='POST'){
-	if(!function_exists('apache_request_headers')){
-		$token = $_SERVER['HTTP_TOKEN'];
-	}
-	else{
-		$headers = apache_request_headers();
-	   	foreach ($headers as $header => $value) {
-	    	if($header == "token"){
-	    		$token = $value;
-	    	}
-		}
-	}
-
+	$token = $_SERVER['HTTP_TOKEN'];
 	$data = array();
 	$data['image_id'] = get('image_id');
 	$data['image_url'] = get('image_url');
