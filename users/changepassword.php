@@ -13,7 +13,7 @@ if($method =='POST'){
 	$email= check_token('users',$token,$dbh);
 	$out = array_shift(array_shift($email));
 	$old_password = get('oldpassword');
-	$old_data['password'] = encode($token,$old_password);
+	$old_data['password'] = encode($old_password, $token);
 	$wh1 = "token='".$token."' AND password='".$old_data['password']."' ";
 	$check = check_rec_count('users',$wh1,$dbh);
 	if(!$check){
@@ -26,7 +26,7 @@ if($method =='POST'){
 					$retype = get('retype');
 					if($new_password == $retype)
 					{
-						$password = encode($token,$new_password);
+						$password = encode($new_password, $token);
 						$wh = "token='".$token."'";
 						$data['password'] = $password; 
 						try{
