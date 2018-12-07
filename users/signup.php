@@ -29,7 +29,7 @@ if($method=='POST'){
 	else{
 		if($valid){
 
-			$data['password'] = encode($data['token'],$pwd);			
+			$data['password'] = encode($pwd,$data['token']);			
 			$id = insert('users',$data,$dbh);
 			$res['id'] = $id;
 			$res['code'] = '200';

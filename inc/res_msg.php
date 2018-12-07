@@ -29,4 +29,8 @@
 	$global_messages['400'] = 'Thank you for rate us';
 	$global_messages['401'] = 'Rate is not submitted';
 	$global_messages['402'] = 'Feilds should not be empty';
+	$global_messages['403'] = 'Email is not found';
+	$global_messages['404'] = 'Your password has been send';
+	$global_messages['405'] = 'User is not active';
+	$global_messages['406'] = 'Mail is not sent';
 ?>

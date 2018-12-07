@@ -44,4 +44,11 @@ function get_images($table,$con){
     $result = sql($query,$con);
     return $result;
 }
+function get_pswd($table,$where,$con){
+    global $dbh;
+    $sets = array();
+    $query = "select * from `{$table}`  where email = '{$where}' AND status = 'active' ";
+    $result = sql($query,$con);
+    return $result; 
+}
 ?>
