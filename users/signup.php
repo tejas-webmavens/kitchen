@@ -13,7 +13,7 @@ if($method=='POST'){
 	$data['token'] = uniqid();
 	$data['email'] = get('email');
 	$pwd = get('password');
-	$password = decode($data['token'],$pwd);
+	$password = decode($pwd,$data['token']);
 	$req = array('email'=>$data['email'],'password'=>$password);
 	if(isset($data['email']) && isset($password) && $data['email']!='' && $password!=''){
 		$valid = true;
