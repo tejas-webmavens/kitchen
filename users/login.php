@@ -13,7 +13,7 @@ if($method=='POST'){
 	$token = get_token('users',$data['email'],$dbh);
 	$out = array_shift(array_shift($token));
 	$pwd = get('password');
-	$data['password'] = encode($out,$pwd);
+	$data['password'] = encode($pwd,$out);
 	$req = array('email'=>$data['email'],'password'=>$data['password']);
 	if(isset($data['email']) && isset($data['password']) && $data['email']!='' && $data['password']!=''){
 		$valid = true;
