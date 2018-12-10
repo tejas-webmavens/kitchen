@@ -117,7 +117,7 @@ class IndexController extends Zend_Controller_Action
 			$this->view->end_date = $end_date;
 			$this->view->Count = $Count;
 			$this->view->rating = $data;
-			$this->view->pagination = Core_BP_Components_Pagination::display($Count, $offset, $this->perpage, $page, 'http://localhost/kitchen/Admin/public/index/rating', $link_param);	
+			$this->view->pagination = Core_BP_Components_Pagination::display($Count, $offset, $this->perpage, $page, 'index/rating', $link_param);	
 
 	}
 	public function logoutAction() {
@@ -135,7 +135,7 @@ class IndexController extends Zend_Controller_Action
 		Core_BP_Session::setVal("user_name","");		
 		
 		
-		header("Location: http://localhost/kitchen/Admin/public/index/login");
+		header("Location: index/login");
 		exit;
 	}
 	public function loginAction(){
@@ -151,7 +151,7 @@ class IndexController extends Zend_Controller_Action
 						if(!isset($_SESSION['userId']))
 							{
 							    // not logged in
-							    header('Location: http://localhost/kitchen/Admin/public/index/login');
+							    header('Location: index/login');
 							    exit();
 							}
 						$session = Core_BP_Session::get();
@@ -168,7 +168,7 @@ class IndexController extends Zend_Controller_Action
 						if($this->view->ref!="") {
 							header("Location: ".base64_decode($this->view->ref));
 						} else {
-							header("Location: http://localhost/kitchen/Admin/public/index/index");
+							header("Location: index/index");
 						}
 						exit;
 					} else {

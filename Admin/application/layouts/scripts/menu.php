@@ -12,7 +12,7 @@
                 </ul>
                 <ul class="nav navbar-top-links navbar-right pull-right">
                     <li class="dropdown">
-                        <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"> <img src="images/users/1.jpg" alt="user-img" width="36" class="img-circle"><b class="hidden-xs">Admin </b> &nbsp; <span class="ti-angle-down"></span> </a>
+                        <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"> <img src="assets/images/users/1.jpg" alt="user-img" width="36" class="img-circle"><b class="hidden-xs">Admin </b> &nbsp; <span class="ti-angle-down"></span> </a>
                         <ul class="dropdown-menu dropdown-user">
                             <li><a href="login"><i class="fa fa-power-off"></i>  Logout</a></li>
                         </ul>
@@ -31,17 +31,17 @@
                 <ul class="nav" id="side-menu">                    
                     
 
-                    <li> <a href="http://localhost/kitchen/Admin/public/index/index"><i class="linea-icon linea-basic fa-fw" data-icon="c"></i> <span class="hide-menu"> Dashboard</a>
+                    <li> <a href="index/index"><i class="linea-icon linea-basic fa-fw" data-icon="c"></i> <span class="hide-menu"> Dashboard</a>
                     </li>
 
-                    <li> <a href="http://localhost/kitchen/Admin/public/index/Ratings"><i class="ti-star fa-fw"></i> <span class="hide-menu"> Ratings</a>
+                    <li> <a href="index/Ratings"><i class="ti-star fa-fw"></i> <span class="hide-menu"> Ratings</a>
                     </li>
 
                 	<li class="active"> <a href="javascript:void(0);" class="waves-effect"><i class="ti-user fa-fw"></i> <span class="hide-menu">Users <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
-                    	<li> <a href="http://localhost/kitchen/Admin/public/users/addnew">Add new user</a> </li>
-                        <li> <a href="http://localhost/kitchen/Admin/public/users/activeuser">Active <span class="label label-rouded label-info pull-right"><?php  echo $this->activeCount; ?></span></a> </li>
-                        <li> <a href="http://localhost/kitchen/Admin/public/users/deactiveuser">Deactivated <span class="label label-warning label-info pull-right"><?php echo $this->deactiveCount; ?></span></a> </li>
+                    	<li> <a href="users/addnew">Add new user</a> </li>
+                        <li> <a href="users/activeuser">Active <span class="label label-rouded label-info pull-right"><?php  echo $this->activeCount; ?></span></a> </li>
+                        <li> <a href="users/deactiveuser">Deactivated <span class="label label-warning label-info pull-right"><?php echo $this->deactiveCount; ?></span></a> </li>
                     </ul>
                 </li>
 

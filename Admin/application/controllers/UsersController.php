@@ -151,7 +151,7 @@ class UsersController extends Zend_Controller_Action
 					$this->view->start_date = $start_date;
 					$this->view->end_date = $end_date;
 					$this->view->active = $data;
-					$this->view->pagination = Core_BP_Components_Pagination::display($Count, $offset, $this->perpage, $page, 'http://localhost/kitchen/Admin/public/users/activeuser', $link_param);	
+					$this->view->pagination = Core_BP_Components_Pagination::display($Count, $offset, $this->perpage, $page, 'users/activeuser', $link_param);	
 	}
 	public function deactiveuserAction(){
 		
@@ -257,7 +257,7 @@ class UsersController extends Zend_Controller_Action
 			$this->view->end_date = $end_date;
 			Core_BP_Session::setVal("deactiveCount", $Count);
 			$this->view->deactive = $data;
-			$this->view->pagination = Core_BP_Components_Pagination::display($Count_deactive, $offset, $this->perpage, $page, 'http://localhost/kitchen/Admin/public/users/activeuser', $link_param);
+			$this->view->pagination = Core_BP_Components_Pagination::display($Count_deactive, $offset, $this->perpage, $page, 'users/activeuser', $link_param);
 
 	}
 	public function edituserAction(){
