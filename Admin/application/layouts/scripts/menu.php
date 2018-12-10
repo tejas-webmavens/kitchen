@@ -12,9 +12,9 @@
                 </ul>
                 <ul class="nav navbar-top-links navbar-right pull-right">
                     <li class="dropdown">
-                        <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"> <img src="assets/images/users/1.jpg" alt="user-img" width="36" class="img-circle"><b class="hidden-xs">Admin </b> &nbsp; <span class="ti-angle-down"></span> </a>
+                        <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"> <b class="hidden-xs">Admin </b> &nbsp; <span class="ti-angle-down"></span> </a>
                         <ul class="dropdown-menu dropdown-user">
-                            <li><a href="login"><i class="fa fa-power-off"></i>  Logout</a></li>
+                            <li><a href="index/login"><i class="fa fa-power-off"></i>  Logout</a></li>
                         </ul>
                         <!-- /.dropdown-user -->
                     </li>
@@ -46,7 +46,7 @@
                 </li>
 
                     </li>
-                    <li><a href="login"><i class="icon-logout fa-fw"></i> <span class="hide-menu">Log out</span></a></li>
+                    <li><a href="index/login"><i class="icon-logout fa-fw"></i> <span class="hide-menu">Log out</span></a></li>
                 </ul>
             </div>
         </div>

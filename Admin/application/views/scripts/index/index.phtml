@@ -73,7 +73,7 @@
                 <div class="row">
                     <div class="col-sm-6 col-xs-12">
                         <div class="white-box">
-                            <h3 class="box-title m-b-0">Daily Users List <a href="ratings" class="btn btn-default pull-right m-l-20 btn-outline ">View All</a></h3>
+                            <h3 class="box-title m-b-0">Daily Users List <a href="users/userdetails" class="btn btn-default pull-right m-l-20 btn-outline ">View All</a></h3>
                             <p class="text-muted">Today's Users list comes here.</p>
                     		<div class="scroll-bar">     
                             	<div class="table-responsive">                           
@@ -93,7 +93,7 @@
                             
                                           ?>
 	                                        <tr>
-	                                            <td><a href="userdetails"><?php echo $value['id']; ?></a></td>
+	                                            <td><a href="user/userdetails?id = <?php echo $value['id']; ?>"><?php echo $value['id']; ?></a></td>
 	                                            <td><?php echo $value['email']; ?></td>
 	                                            <td><?php echo $value['games_played']; ?></td>
 	                                            <td><?php echo gmdate("H:i:s",$value['total_time_spent']); ?></td>
@@ -107,7 +107,7 @@
                     </div>
                     <div class="col-sm-6 col-xs-12">
                         <div class="white-box">
-                            <h3 class="box-title m-b-0">Daily Ratings List <a href="ratings" class="btn btn-default pull-right m-l-20 btn-outline ">View All</a></h3>
+                            <h3 class="box-title m-b-0">Daily Ratings List <a href="index/ratings" class="btn btn-default pull-right m-l-20 btn-outline ">View All</a></h3>
                             <p class="text-muted">Today's Users Ratings' list comes here.</p>
                     		<div class="scroll-bar">     
                             	<div class="table-responsive">                           
