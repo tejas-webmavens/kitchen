@@ -11,6 +11,8 @@ class IndexController extends Zend_Controller_Action
 			if($this->start_date==''){
 				$start_date = date('Y-m-d');
 				$end_date = date('Y-m-d');
+				Core_BP_Session::setVal("start_date", $start_date);
+				Core_BP_Session::setVal("end_date", $end_date);
 			}
 			$this->db = Zend_Db_Table::getDefaultAdapter();
 			$this->perpage = 50;	 	

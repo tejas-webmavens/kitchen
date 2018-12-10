@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="images/favicon.png" sizes="16x16" />
+    <link rel="icon" href="assets/images/favicon.png" sizes="16x16" />
     <!-- Bootstrap Core CSS -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/required/bootstrap-extension/css/bootstrap-extension.css" rel="stylesheet">
@@ -19,7 +19,7 @@
    
     <!-- <title>Login | KitchenKraze</title> -->
 
-   <script type="text/javascript" src="js/jquery.min.js"></script>
+   <script type="text/javascript" src="assets/js/jquery.min.js"></script>
    <?php $action = Zend_Controller_Front::getInstance()->getRequest()->getActionName();
         if ($action == 'userdetail') {?>
              <title>User Detail | KitchenKraze</title>

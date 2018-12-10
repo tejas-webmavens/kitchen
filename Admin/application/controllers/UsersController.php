@@ -10,15 +10,17 @@ class UsersController extends Zend_Controller_Action
 		  if($this->start_date==''){
 				$start_date = date('Y-m-d');
 				$end_date = date('Y-m-d');
+				Core_BP_Session::setVal("start_date", $start_date);
+				Core_BP_Session::setVal("end_date", $end_date);
 			}
-		  	$this->db = Zend_Db_Table::getDefaultAdapter();
-		  	$this->perpage = 50;	 
-		  	$Count_active = Core_BP_Custom::count_data('users','active',$start_date,$end_date);
-			$this->view->activeCount = $Count_active;
-			Core_BP_Session::setVal("activeCount",$Count_active);
-			$Count_deactive = Core_BP_Custom::count_data('users','deactive',$start_date,$end_date);
-			$this->view->deactiveCount = $Count_deactive;
-			Core_BP_Session::setVal("deactiveCount",$Count_deactive);		
+		  $this->db = Zend_Db_Table::getDefaultAdapter();
+		  $this->perpage = 50;	 
+		  $Count_active = Core_BP_Custom::count_data('users','active', $this->start_date,$this->end_date);
+		  $this->view->activeCount = $Count_active;
+		  Core_BP_Session::setVal("activeCount",$Count_active);
+		  $Count_deactive = Core_BP_Custom::count_data('users','deactive', $this->start_date,$this->end_date);
+		  $this->view->deactiveCount = $Count_deactive;
+		  Core_BP_Session::setVal("deactiveCount",$Count_deactive);		
 	}
 	public function addnewAction() {
 		$this->view->msg="";

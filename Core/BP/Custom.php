@@ -77,11 +77,11 @@ class Core_BP_Custom
 
         $query = "select COUNT(id) AS count from `{$table}` WHERE status='{$status}' ";
         
-            if($this->start_date ==''){
+            if($start_date ==''){
                 $query .= "AND STR_TO_DATE(audit_created_date, '%Y-%m-%d')=CURDATE()";
             }
             else{
-                $query .= "AND STR_TO_DATE(audit_created_date, '%Y-%m-%d')>='". $this->start_date."' AND STR_TO_DATE(audit_created_date, '%Y-%m-%d')<='". $this->end_date."'";
+                $query .= "AND STR_TO_DATE(audit_created_date, '%Y-%m-%d')>='". $start_date."' AND STR_TO_DATE(audit_created_date, '%Y-%m-%d')<='". $end_date."'";
             }
             $res = $this->db->query($query);
             $Count =$res->fetchAll();
