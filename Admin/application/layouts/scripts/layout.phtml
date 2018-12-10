@@ -9,6 +9,13 @@
        
         <!-- BEGIN CONTAINER -->
         <div>
+            <div>
+               <?php
+                // $this->msg = Core_BP_Session::getVal("msg");
+                // echo $this->msg; 
+                // Zend_Session::destroy();
+                ?>
+            </div>
             <?php $action = Zend_Controller_Front::getInstance()->getRequest()->getActionName();
         if ($action == 'login' || $action == 'register') {
             // $this->_helper->layout->disableLayout();

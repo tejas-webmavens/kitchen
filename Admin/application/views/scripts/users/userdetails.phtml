@@ -11,8 +11,8 @@
                         <h4 class="page-title">User <?php echo $this->userdetails['id'] ?> IN Overview</h4>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                    	<a href="addnew" class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm">Add New User</a>
-                    	<a href="edituser?id=<?php echo $this->userdetails['id'];?>" class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm">Edit User</a>
+                    	<a href="users/addnew" class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm">Add New User</a>
+                    	<a href="users/edituser?id=<?php echo $this->userdetails['id'];?>" class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm">Edit User</a>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
@@ -89,7 +89,9 @@
 												<div class="col-xs-12">
 												<?php
 												$count = 0;
-												foreach($this->userdate  as $values){
+                                                // if($this->userlogs == ''){
+                                                // print_r($this->userlogs);
+												foreach($this->userlogs  as $key=>$values){
 													$count++;
 												?>
 													<div class="panel-group visitor-accordian" id="accordion" role="tablist">
@@ -97,13 +99,13 @@
 													        <div class="panel-heading">
 													            <h4 class="panel-title">
 													                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_<?= $count ?>" aria-expanded="true" aria-controls="collapse_<?= $count ?>" class="collapsed">
-													                <?php echo  date('j F Y', strtotime( $values['start_time'])); ?>
-													                	<span class="pull-right">4 Games <small>(010:00:00)</small></span>
+													                <?php echo  date('j F Y', strtotime( $key)); ?>
+													                	<span class="pull-right"><?php echo count($values) ?> Games <small><?php echo  date("H:i:s",strtotime($key['total_time_spend']));  ?></small></span>
 													                </a>
 													            </h4>
 													        </div>
-													        <?php foreach($this->userlogs as $key=>$value){
-													        	foreach ($value as $key => $value1) {
+													        <?php 
+													        	
 													        ?>
 													        
 													        <div id="collapse_<?= $count ?>" class="panel-collapse collapse" role="tabpanel">
@@ -120,24 +122,25 @@
 													                		</tr>
 													                	</thead>
 													                	<tbody>
+                                                                            <?php foreach ($values as $value1) {?>
 													                		<tr>
-													                			<td><a href="gamedetail?user_id=<?php echo $this->userdetails['id']  ?>">
-													                				<?php echo  date("H:i:s",strtotime($value1['total_time_spent']));  ?></a></td>
+													                			<td><a href="users/gamedetail?user_id=<?php echo $this->userdetails['id']  ?>">
+													                				<?php echo  date("H:i:s",strtotime($value1['start_time']));  ?></a></td>
 													                			<td>52:60:00</td>
 													                			<td><?php echo $value1['rounds']  ?></td>
 													                			<td><?php echo $value1['image_view_log'] ?></td>
 													                			<td>60%</td>
 													                			<td><?php echo $value1['share_count'] ?></td>
 													                		</tr>
-													                		
+													                		<?php } ?>
 													                	</tbody>
 													                </table>
 													            </div>
 													        </div>
-													    <?php } } ?>
+													    <?php }  ?>
 													    </div>
 													</div>
-													<?php } ?>			                        				
+													<?php  ?>			                        				
 												</div>
 												
 											</div>

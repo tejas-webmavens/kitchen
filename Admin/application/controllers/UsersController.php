@@ -7,6 +7,7 @@ class UsersController extends Zend_Controller_Action
 	{
 	      $this->start_date = Core_BP_Session::getVal("start_date");
 		  $this->end_date = Core_BP_Session::getVal("end_date");
+		  // $this->msg = Core_BP_Session::getVal("msg");
 		  if($this->start_date==''){
 				$start_date = date('Y-m-d');
 				$end_date = date('Y-m-d');
@@ -14,7 +15,7 @@ class UsersController extends Zend_Controller_Action
 				Core_BP_Session::setVal("end_date", $end_date);
 			}
 		  $this->db = Zend_Db_Table::getDefaultAdapter();
-		  $this->perpage = 50;	 
+		  $this->perpage = 10;	 
 		  $Count_active = Core_BP_Custom::count_data('users','active', $this->start_date,$this->end_date);
 		  $this->view->activeCount = $Count_active;
 		  Core_BP_Session::setVal("activeCount",$Count_active);
@@ -49,16 +50,12 @@ class UsersController extends Zend_Controller_Action
 				}
 			}
 	}
-
 	public function activeuserAction() {
-		
 		$user_id = $_GET['id'];
 		$active_query = $this->db->query("UPDATE users SET status='active' WHERE id = '".$user_id."'");
-		// if($this->getRequest()->isPost()){
 		$start_date = $this->getRequest()->getParam('start_date','');
 		$end_date = $this->getRequest()->getParam('end_date','');
 		$page = $this->getRequest()->getParam('page', 1);
-		 
 		if($start_date==''){
 			$start_date = $this->start_date;
 			$end_date = $this->end_date;
@@ -121,8 +118,6 @@ class UsersController extends Zend_Controller_Action
 							$res_active = $this->db->query($query_active);
 							$Count_active =$res_active->fetchAll();
 							$c = array_shift($Count_active);
-							
-
 							$data_query = "select * from users WHERE status='active' ";
 							if(isset($id) && $id !== ''){
 								$data_query .= " AND id LIKE '%{$id}%' ";
@@ -282,42 +277,44 @@ class UsersController extends Zend_Controller_Action
 						$wh1 = "email='".$data['email']."'";
 						$avail = Core_BP_Custom::check_rec_count('users',$wh1);
 						if($avail){
-							$this->view->msg="email already exists";
-						}
+							$msg = "email already exists";
+							Core_BP_Session::setVal("msg", $msg);
+							}
 						else{
-
 							 $data = $this->db->query("UPDATE users SET email= '".$email."' where id = '".$user_id."'");
-							$this->view->msg="succefully updated email";	
-						}
-						
+							 $msg = "succefully updated email";
+							 Core_BP_Session::setVal("msg", $msg);
+						}	
 					}
 					if($old_pwd !== $password){
-						$new_password = Core_BP_Custom::encode1($token,$password);
+						$new_password = Core_BP_Custom::encode1($password,$token);
 						$data = $this->db->query("UPDATE users SET password='".$new_password."' where id = '".$user_id."'");
-						$this->view->msg="succefully updated password";
+						 $msg = "succefully updated password";
+							 Core_BP_Session::setVal("msg", $msg);
 					}
-					if($em !== $email && $old_pwd !== $password ){
-						$data['email'] = $email;
-						$wh1 = "email='".$data['email']."'";
-						$avail = Core_BP_Custom::check_rec_count('users',$wh1);
+					// if($em !== $email && $old_pwd !== $password ){
 						
-						if($avail){
-							$this->view->msg="email already exists";
-						}
-						else{
-							$new_password = Core_BP_Custom::encode1($token,$password);
-							 $data['email'] = $email;
-							 $data = $this->db->query("UPDATE users SET email= '".$email."',password='".$new_password."' where id = '".$user_id."'");
-							$this->view->msg="succefully updated email";	
-						}
+					// 	// $data['email'] = $email;
+					// 	$wh1 = "email='".$email."'";
+					// 	$avail = Core_BP_Custom::check_rec_count('users',$wh1);
 						
-					}
-					else{
-							$this->view->msg="You don't make any changes";
-						}
+					// 	if(!$avail){
+					// 		$msg = "email already exists";
+					// 		Core_BP_Session::setVal("msg", $msg);
+					// 	}
+					// 	else{
+					// 		$new_password = Core_BP_Custom::encode1($password,$token);
+					// 		echo "UPDATE users SET email= '".$data['email']."',password='".$new_password."' where id = '".$user_id."'";
+					// 		 $data = $this->db->query("UPDATE users SET email= '".$data['email']."',password='".$new_password."' where id = '".$user_id."'");
+
+					// 		 $msg = "succefully updated email and password";
+					// 		 Core_BP_Session::setVal("msg", $msg);
+					// 	}
+					// }
+					header("Location: activeuser");
 				}
+		}	
 			
-			}
 	}
 	public function userdetailsAction(){
 		$user_id = $_GET['id'];
@@ -325,19 +322,17 @@ class UsersController extends Zend_Controller_Action
 		$res_details = $details_query->fetchAll();
 		$details = array_shift($res_details);	
 		$this->view->userdetails = $details;
-		$date_query = $this->db->query("select DISTINCT STR_TO_DATE(start_time, '%Y-%m-%d') as start_time  from users_log where user_id = '".$user_id."' ");
+		$date_query = $this->db->query("select DISTINCT STR_TO_DATE(start_time, '%Y-%m-%d') as dates  from users_log where user_id = '".$user_id."' ");
 		$res_date = $date_query->fetchAll();
-		foreach ($res_date as $key => $value) {
-				$v1[] = $value;
-				$this->view->userdate=$v1;
-				$data_query = $this->db->query("select  * from users_log where user_id='".$user_id."' AND STR_TO_DATE(start_time, '%Y-%m-%d') =  '".implode(',',$value)."' ");
+		foreach ($res_date as $value) {
+				$data_query = $this->db->query("select  * from users_log where user_id='".$user_id."' AND STR_TO_DATE(start_time, '%Y-%m-%d') =  '".$value['dates']."' ");
 				$res_data = $data_query->fetchAll();
-				$res[]= $res_data;
-				$this->view->userlogs=$res;
-				
+				foreach($res_data as $data){
+					$display_dates[$value['dates']][] = $data;
+					// $display_dates[$value['dates']]['total_time_spend'] = $data['total_time_spend'];
+				}
 		}
-		
-
+		 $this->view->userlogs=$display_dates;
 	}	
 	public function gamedetailAction(){
 		$user_id = $_GET['user_id'];

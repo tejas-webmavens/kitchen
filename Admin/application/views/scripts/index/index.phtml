@@ -93,7 +93,7 @@
                             
                                           ?>
 	                                        <tr>
-	                                            <td><a href="user/userdetails?id = <?php echo $value['id']; ?>"><?php echo $value['id']; ?></a></td>
+	                                            <td><a href="users/userdetails?id=<?php echo $value['id']; ?>"><?php echo $value['id']; ?></a></td>
 	                                            <td><?php echo $value['email']; ?></td>
 	                                            <td><?php echo $value['games_played']; ?></td>
 	                                            <td><?php echo gmdate("H:i:s",$value['total_time_spent']); ?></td>
@@ -125,7 +125,7 @@
                                                # code...
                                            }{ ?>
 	                                        <tr>
-	                                            <td><a href="userdetails"><?php echo $value['id']; ?></a></td>
+	                                            <td><a href="users/userdetails?id=<?php echo $value['id']; ?>"><?php echo $value['id']; ?></a></td>
 	                                            <td><?php echo $value['email']; ?></td>
 	                                            <td><?php echo $value['rate']; ?></td>
 	                                            <td>

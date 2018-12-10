@@ -65,7 +65,7 @@
                                             # code...
                                         ?>
                                     	<tr data-url="">
-                                    		<td><a href="users/userdetails"><?php echo $value['id'] ?></a></td>
+                                    		<td><a href="users/userdetails?id=<?php echo $value['id'] ?>"><?php echo $value['id'] ?></a></td>
                                     		<td><?php echo $value['email'] ?></td>
                                     		<td><?php echo $value['games_played'] ?></td>
                                     		<td><?php echo gmdate("H:i:s",$value['total_time_spent']); ?></td>
@@ -84,21 +84,23 @@
                                 </table>
                             </div>
 
-                             <?php if($Count == '50'){ ?>
+                             
                             <div class="text-center">
-                                <ul class="pagination pagination-split">
-                                    <li> <a href="#"><i class="fa fa-angle-left">
+                                <!-- <ul class="pagination pagination-split"> -->
+                                    <!-- <li> <a href="#"><i class="fa fa-angle-left"> -->
                                          <?php echo $this->pagination ?> 
-                                    </i></a> </li>
+                                    <!-- </i></a> </li> -->
                                    <!--  <li class="active"> <a href="#">1</a> </li>
                                     <li> <a href="#">2</a> </li>
                                     <li> <a href="#">3</a> </li>
                                     <li> <a href="#">4</a> </li>
                                     <li> <a href="#">5</a> </li>
                                     <li> <a href="#"><i class="fa fa-angle-right"></i></a> </li> -->
-                                </ul>
+                                <!-- </ul> -->
                             </div>
-                        <?php } ?>
+                        <?php
+                         // }
+                          ?>
                         </div>
                     </div>
                 </div>
