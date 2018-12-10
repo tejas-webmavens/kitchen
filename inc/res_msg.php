@@ -33,7 +33,4 @@
 	$global_messages['404'] = 'Your password has been send';
 	$global_messages['405'] = 'User is not active';
 	$global_messages['406'] = 'Mail is not sent';
-	$global_messages['407'] = 'You are already Login';
-	$global_messages['408'] = 'You are not Login with facebook';
-	$global_messages['409'] = 'You are not Login with gmail';
 ?>
