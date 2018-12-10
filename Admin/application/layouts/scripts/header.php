@@ -113,7 +113,7 @@
              <link href="assets/required/timepicker/bootstrap-timepicker.min.css" rel="stylesheet">
              <link href="assets/required/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
             <?php }?>
-             <?php  if ($action == 'ratings') {?>
+             <?php  if ($action == 'Ratings') {?>
              <title>Ratings | KitchenKraze</title>
              <link href="assets/required/timepicker/bootstrap-timepicker.min.css" rel="stylesheet">
             <link href="assets/required/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">

@@ -52,7 +52,7 @@ class UsersController extends Zend_Controller_Action
 	}
 	public function activeuserAction() {
 		$user_id = $_GET['id'];
-		$active_query = $this->db->query("UPDATE users SET status='deactive' WHERE id = '".$user_id."'");
+		$active_query = $this->db->query("UPDATE users SET status='deactive' WHERE id = '".$user_id."' and status = 'active'");
 		$start_date = $this->getRequest()->getParam('start_date','');
 		$end_date = $this->getRequest()->getParam('end_date','');
 		$page = $this->getRequest()->getParam('page', 1);
@@ -87,12 +87,12 @@ class UsersController extends Zend_Controller_Action
 							}
 							$res = $this->db->query($data_query);
 							$res_data =$res->fetchAll();
-					if($this->getRequest()->isPost()){
-						$id = $this->_request->getPost('id');
-						$email = $this->_request->getPost('email');
-						$games_played = $this->_request->getPost('games_played');
-						$total_time_spent = $this->_request->getPost('total_time_spent');
-						$total_shares = $this->_request->getPost('total_shares');
+					// if($this->getRequest()->isPost()){
+						$id = $this->getRequest()->getParam('id');
+						$email = $this->getRequest()->getParam('email');
+						$games_played = $this->getRequest()->getParam('games_played');
+						$total_time_spent = $this->getRequest()->getParam('total_time_spent');
+						$total_shares = $this->getRequest()->getParam('total_shares');
 							$query_active = "select COUNT(id) AS count from users WHERE status='active' ";
 							if(isset($id) && $id !== ''){
 								$query_active .= " AND id LIKE '%{$id}%' ";
@@ -101,13 +101,13 @@ class UsersController extends Zend_Controller_Action
 								$query_active .= "AND email LIKE '%{$email}%' ";
 							}
 							if(isset($games_played) && $games_played !== ''){
-								$query_active .= "AND games_played  LIKE '%{$games_played}% '";
+								$query_active .= "AND games_played  = '".$games_played."'";
 							}
 							if(isset($total_time_spent) && $total_time_spent !== ''){
-								$query_active .= "AND total_time_spent  LIKE '%{$total_time_spent}% '";
+								$query_active .= "AND total_time_spent  = '".$total_time_spent."'";
 							}
 							if(isset($total_shares) && $total_shares !== ''){
-								$query_active .= "AND total_shares  LIKE '%{$total_shares}% ' ";
+								$query_active .= "AND total_shares  ='".$total_shares."' ";
 							}
 							if($this->start_date ==''){
 								$query_active .= "AND STR_TO_DATE(audit_created_date, '%Y-%m-%d')=CURDATE()";
@@ -115,7 +115,9 @@ class UsersController extends Zend_Controller_Action
 							else{
 								$query_active .= "AND STR_TO_DATE(audit_created_date, '%Y-%m-%d')>='". $start_date."' AND STR_TO_DATE(audit_created_date, '%Y-%m-%d')<='". $end_date."'";
 							}
+							// echo $query_active;die;
 							$res_active = $this->db->query($query_active);
+							// print_r($res_active);die;
 							$Count_active =$res_active->fetchAll();
 							$c = array_shift($Count_active);
 							$data_query = "select * from users WHERE status='active' ";
@@ -126,13 +128,13 @@ class UsersController extends Zend_Controller_Action
 								$data_query .= "AND email LIKE '%{$email}%' ";
 							}
 							if(isset($games_played) && $games_played !== ''){
-								$data_query .= "AND games_played  LIKE '%{$games_played}% ' ";
+								$data_query .= "AND games_played  = '".$games_played."' ";
 							}
 							if(isset($total_time_spent) && $total_time_spent !== ''){
-								$data_query .= "AND total_time_spent  LIKE '%{$total_time_spent}% ' ";
+								$data_query .= "AND   total_time_spent  = '".$total_time_spent."' ";
 							}
 							if(isset($total_shares) && $total_shares !== ''){
-								$data_query .= "AND total_shares  LIKE '%{$total_shares}% '";
+								$data_query .= "AND  total_shares  ='".$total_shares."'";
 							}
 							if($start_date ==''){
 								$data_query .= "AND STR_TO_DATE(audit_created_date, '%Y-%m-%d') = CURDATE()";
@@ -142,18 +144,21 @@ class UsersController extends Zend_Controller_Action
 							}
 							$res = $this->db->query($data_query);
 							$res_data =$res->fetchAll();
-								}
+							
+								// }
 					$data = $res_data;
 					$Count = $c['count'];
 					$this->view->start_date = $start_date;
 					$this->view->end_date = $end_date;
 					$this->view->active = $data;
-					$this->view->pagination = Core_BP_Components_Pagination::display($Count, $offset, $this->perpage, $page, 'users/activeuser', $link_param);	
+					$this->view->pagination = Core_BP_Components_Pagination::display($Count, $offset, $this->perpage, $page, 'users/activeuser', $link_param);
+					// header("Location: activeuser");
+							// exit;	
 	}
 	public function deactiveuserAction(){
 		
 		$user_id = $_GET['id'];
-		$deactive_query = $this->db->query("UPDATE users SET status='active' WHERE id = '".$user_id."'");
+		$deactive_query = $this->db->query("UPDATE users SET status='active' WHERE id = '".$user_id."' and status ='deactive' ");
 		$start_date = $this->getRequest()->getParam('start_date','');
 		$end_date = $this->getRequest()->getParam('end_date','');
 		$page = $this->getRequest()->getParam('page', 1);
@@ -189,13 +194,12 @@ class UsersController extends Zend_Controller_Action
 			}
 			$res = $this->db->query($data_query);
 			$res_data =$res->fetchAll();
-			if($this->getRequest()->isPost()){
-					$id = $this->_request->getPost('id');
-					$email = $this->_request->getPost('email');
-					$games_played = $this->_request->getPost('games_played');
-					$total_time_spent = $this->_request->getPost('total_time_spent');
-					$total_shares = $this->_request->getPost('total_shares');	
-
+			// if($this->getRequest()->isPost()){
+					$id = $this->getRequest()->getParam('id');
+						$email = $this->getRequest()->getParam('email');
+						$games_played = $this->getRequest()->getParam('games_played');
+						$total_time_spent = $this->getRequest()->getParam('total_time_spent');
+						$total_shares = $this->getRequest()->getParam('total_shares');
 					$query_deactive = "select COUNT(id) AS count from users WHERE status='deactive' ";
 					if(isset($id) && $id !== ''){
 						$query_deactive .= " AND id LIKE '%{$id}%' ";
@@ -204,13 +208,13 @@ class UsersController extends Zend_Controller_Action
 						$query_deactive .= "AND email LIKE '%{$email}%' ";
 					}
 					if(isset($games_played) && $games_played !== ''){
-						$query_deactive .= "AND games_played  LIKE '%{$games_played}% '";
+						$query_deactive .= "AND    games_played  = '".$games_played."'";
 					}
 					if(isset($total_time_spent) && $total_time_spent !== ''){
-						$query_deactive .= "AND total_time_spent  LIKE '%{$total_time_spent}% '";
+						$query_deactive .= "AND total_time_spent = '".$total_time_spent."' ";
 					}
 					if(isset($total_shares) && $total_shares !== ''){
-						$query_deactive .= "AND total_shares  LIKE '%{$total_shares}% ' ";
+						$query_deactive .= "AND total_shares  = '".$total_shares."' ";
 					}
 					if($this->start_date ==''){
 						$query_deactive .= "AND STR_TO_DATE(audit_created_date, '%Y-%m-%d')=CURDATE()";
@@ -231,13 +235,13 @@ class UsersController extends Zend_Controller_Action
 						$data_query .= "AND email LIKE '%{$email}%' ";
 					}
 					if(isset($games_played) && $games_played !== ''){
-						$data_query .= "AND games_played  LIKE '%{$games_played}% ' ";
+						$data_query .= "AND  games_played  = '".$games_played."' ";
 					}
 					if(isset($total_time_spent) && $total_time_spent !== ''){
-						$data_query .= "AND total_time_spent  LIKE '%{$total_time_spent}% ' ";
+						$data_query .= "AND total_time_spent  = '".$total_time_spent."' ";
 					}
 					if(isset($total_shares) && $total_shares !== ''){
-						$data_query .= "AND total_shares  LIKE '%{$total_shares}% '";
+						$data_query .= "AND  total_shares  ='".$total_shares."'";
 					}
 					if($start_date ==''){
 						$data_query .= "AND STR_TO_DATE(audit_created_date, '%Y-%m-%d') = CURDATE()";
@@ -247,7 +251,7 @@ class UsersController extends Zend_Controller_Action
 					}
 					$res = $this->db->query($data_query);
 					$res_data =$res->fetchAll();	
-				}
+				// }
 			$data = $res_data;
 			$Count_deactive = $c['count'];
 			$this->view->start_date = $start_date;
@@ -255,7 +259,7 @@ class UsersController extends Zend_Controller_Action
 			Core_BP_Session::setVal("deactiveCount", $Count);
 			$this->view->deactive = $data;
 			$this->view->pagination = Core_BP_Components_Pagination::display($Count_deactive, $offset, $this->perpage, $page, 'users/deactiveuser', $link_param);
-
+			
 	}
 	public function edituserAction(){
 		$user_id = $_GET['id'];

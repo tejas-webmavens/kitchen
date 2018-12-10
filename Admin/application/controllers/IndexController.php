@@ -9,10 +9,10 @@ class IndexController extends Zend_Controller_Action
 			// $this->activeCount = Core_BP_Session::getVal("activeCount");
 			// $this->deactiveCount = Core_BP_Session::getVal("deactiveCount");
 			if($this->start_date==''){
-				$start_date = date('Y-m-d');
-				$end_date = date('Y-m-d');
-				Core_BP_Session::setVal("start_date", $start_date);
-				Core_BP_Session::setVal("end_date", $end_date);
+				$this->start_date = date('Y-m-d');
+				$this->end_date = date('Y-m-d');
+				Core_BP_Session::setVal("start_date", $this->start_date);
+				Core_BP_Session::setVal("end_date", $this->end_date);
 			}
 			$this->db = Zend_Db_Table::getDefaultAdapter();
 			$this->perpage = 50;	 	
@@ -68,21 +68,20 @@ class IndexController extends Zend_Controller_Action
 				}
 			$res = $this->db->query($data_query);
 			$res_data =$res->fetchAll();
-			if($this->getRequest()->isPost()){
-						$id = $this->_request->getPost('id');
-						$email = $this->_request->getPost('email');
-						$games_played = $this->_request->getPost('games_played');
-						$total_time_spent = $this->_request->getPost('total_time_spent');
-						$total_shares = $this->_request->getPost('total_shares');
+			// if($this->getRequest()->isPost()){
+						$id = $this->getRequest()->getParam('id');
+						$email = $this->getRequest()->getParam('email');
+						$ratings = $this->getRequest()->getParam('ratings');
+						$comments = $this->getRequest()->getParam('comments');
 						$query = "select COUNT(id) AS count from app_ratings WHERE 1 ";
 						if(isset($id) && $id !== ''){
-							$query .= " AND id LIKE '%{$id}%' ";
+							$query .= " AND id = '".$id."' ";
 						}
 						if(isset($email) && $email !== ''){
 							$query .= "AND email LIKE '%{$email}%' ";
 						}
 						if(isset($ratings) && $ratings !== ''){
-							$query .= "AND rate LIKE '%{$ratings}%' ";
+							$query .= "AND rate ='".$ratings."' ";
 						}
 						if(isset($comments) && $comments !== ''){
 							$query .= "AND comment  LIKE '%{$comments}% '";
@@ -99,13 +98,13 @@ class IndexController extends Zend_Controller_Action
 
 						$data_query = "select * from app_ratings WHERE 1 ";
 						if(isset($id) && $id !== ''){
-							$data_query .= " AND id LIKE '%{$id}%' ";
+							$data_query .= " AND id = '".$id."' ";
 						}
 						if(isset($email) && $email !== ''){
 							$data_query .= "AND email LIKE '%{$email}%' ";
 						}
 						if(isset($ratings) && $ratings !== ''){
-							$data_query .= "AND rate LIKE '%{$ratings}%' ";
+							$data_query .= "AND rate  ='".$ratings."' ";
 						}
 						if(isset($comments) && $comments !== ''){
 							$data_query .= "AND comment  LIKE '%{$comments}%' ";
@@ -118,14 +117,15 @@ class IndexController extends Zend_Controller_Action
 						}
 						$res = $this->db->query($data_query);
 						$res_data =$res->fetchAll();
-		}
+		// }
 			$data = $res_data;
 			$Count = $Count_data['count'];
 			$this->view->start_date = $start_date;
 			$this->view->end_date = $end_date;
 			$this->view->Count = $Count;
 			$this->view->rating = $data;
-			$this->view->pagination = Core_BP_Components_Pagination::display($Count, $offset, $this->perpage, $page, 'index/rating', $link_param);	
+			$this->view->pagination = Core_BP_Components_Pagination::display($Count, $offset, $this->perpage, $page, 'index/ratings', $link_param);	
+			// header("Location: index/ratings");
 
 	}
 	public function logoutAction() {
@@ -141,7 +141,6 @@ class IndexController extends Zend_Controller_Action
 		
 		Core_BP_Session::setVal("user_id",0);
 		Core_BP_Session::setVal("user_name","");		
-		
 		
 		header("Location: index/login");
 		exit;
