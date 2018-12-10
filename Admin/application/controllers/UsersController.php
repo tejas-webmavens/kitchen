@@ -9,8 +9,8 @@ class UsersController extends Zend_Controller_Action
 		  $this->end_date = Core_BP_Session::getVal("end_date");
 		  // $this->msg = Core_BP_Session::getVal("msg");
 		  if($this->start_date==''){
-				$start_date = date('Y-m-d');
-				$end_date = date('Y-m-d');
+				$this->start_date = date('Y-m-d');
+				$this->end_date = date('Y-m-d');
 				Core_BP_Session::setVal("start_date", $start_date);
 				Core_BP_Session::setVal("end_date", $end_date);
 			}
@@ -52,7 +52,7 @@ class UsersController extends Zend_Controller_Action
 	}
 	public function activeuserAction() {
 		$user_id = $_GET['id'];
-		$active_query = $this->db->query("UPDATE users SET status='active' WHERE id = '".$user_id."'");
+		$active_query = $this->db->query("UPDATE users SET status='deactive' WHERE id = '".$user_id."'");
 		$start_date = $this->getRequest()->getParam('start_date','');
 		$end_date = $this->getRequest()->getParam('end_date','');
 		$page = $this->getRequest()->getParam('page', 1);
@@ -153,7 +153,7 @@ class UsersController extends Zend_Controller_Action
 	public function deactiveuserAction(){
 		
 		$user_id = $_GET['id'];
-		$deactive_query = $this->db->query("UPDATE users SET status='deactive' WHERE id = '".$user_id."'");
+		$deactive_query = $this->db->query("UPDATE users SET status='active' WHERE id = '".$user_id."'");
 		$start_date = $this->getRequest()->getParam('start_date','');
 		$end_date = $this->getRequest()->getParam('end_date','');
 		$page = $this->getRequest()->getParam('page', 1);
@@ -254,7 +254,7 @@ class UsersController extends Zend_Controller_Action
 			$this->view->end_date = $end_date;
 			Core_BP_Session::setVal("deactiveCount", $Count);
 			$this->view->deactive = $data;
-			$this->view->pagination = Core_BP_Components_Pagination::display($Count_deactive, $offset, $this->perpage, $page, 'users/activeuser', $link_param);
+			$this->view->pagination = Core_BP_Components_Pagination::display($Count_deactive, $offset, $this->perpage, $page, 'users/deactiveuser', $link_param);
 
 	}
 	public function edituserAction(){

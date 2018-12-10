@@ -6,8 +6,8 @@ class IndexController extends Zend_Controller_Action
 	public function init(){
 			$this->start_date = Core_BP_Session::getVal("start_date");
 			$this->end_date = Core_BP_Session::getVal("end_date");
-			$this->view->activeCount = Core_BP_Session::getVal("activeCount");
-			$this->view->deactiveCount = Core_BP_Session::getVal("deactiveCount");
+			// $this->activeCount = Core_BP_Session::getVal("activeCount");
+			// $this->deactiveCount = Core_BP_Session::getVal("deactiveCount");
 			if($this->start_date==''){
 				$start_date = date('Y-m-d');
 				$end_date = date('Y-m-d');
@@ -16,6 +16,12 @@ class IndexController extends Zend_Controller_Action
 			}
 			$this->db = Zend_Db_Table::getDefaultAdapter();
 			$this->perpage = 50;	 	
+			$Count_active = Core_BP_Custom::count_data('users','active', $this->start_date,$this->end_date);
+		  	$this->view->activeCount = $Count_active;
+		  	Core_BP_Session::setVal("activeCount",$Count_active);
+		  	$Count_deactive = Core_BP_Custom::count_data('users','deactive', $this->start_date,$this->end_date);
+		 	$this->view->deactiveCount = $Count_deactive;
+		  	Core_BP_Session::setVal("deactiveCount",$Count_deactive);		
 	}
 	public function indexAction() {
 		$res = $this->db->query("SELECT * FROM users WHERE STR_TO_DATE(audit_created_date, '%Y-%m-%d') = CURDATE() ORDER BY audit_created_date DESC");
